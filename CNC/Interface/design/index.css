@@ -1,0 +1,13 @@
+<head>
+	<style>
+		span { display: block; }
+		span.old { display: inline; text-decoration: line-through; }
+	</style>
+</head>
+<body>
+	<div>Dieses Element hat einen folgenden Absatz</div>
+	<p>Dieses Element ebenfalls</p>
+	<span style="background:red;color:blue;">Diese</span>
+	<span>Elemente</span>
+	<span><span class="old">nicht!</span> jetzt auch!</span>
+</body>
