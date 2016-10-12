@@ -1,135 +1,84 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-	<link rel="styleheet" href="./design/index.css"/>
+	<link rel="stylesheet" href="./design/index.css"/>
 	<link rel="stylesheet" media="print" href="./design/print.css"/>
 
 	<meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="author" content="Salty">
-    <meta name="robots" content="noindex, follow">
-    <meta name="viewport" content="width=device-width">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-      
-	<title>HTML Live Coding #1</title>
-	<style type="text/css" media="screen">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="author" content="Salty">
+  <meta name="robots" content="noindex, follow">
+  <meta name="viewport" content="width=device-width">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
-	table{
-		border-collapse:collapse;
-		border:1px solid #000000;
-	}
-
-	table td{
-		border:1px solid #000000;
-	}
-	</style>
+  <title>HTML Live Coding #1</title>
+  
+  <style type="text/css" media="screen">
+    
+  </style>
 </head>
 <body>
-	<header>
-		<h1><a contenteditable="true" tabindex=1>Meine zweite Website</a></h1>	
-	</header>
-	<main>
-		<article>
-			<p>Menu</p>
-		</article>
-		<menu>
-			<li><a href="http://erikmartens.weebly.com" tabindex="2" accesskey="a">Website</a></li>
-			<li><a href="#status" tabindex="3">Section 1</a></li>
-			<li><a href="#tasks" tabindex="4">Section 2</a></li>
-		</menu>
-		<table id="status-overview">
-  			<thead>
-          		<tr>
-              		<th>Gruppe</th>
-        			<th>Vorname</th>
-        			<th>Name</th>
-        			<th>Studiengang</th>
-        			<th>Matrikelnummer</th>
-      			</tr>
-  			</thead>
-      		<tbody>
-      			<tr>
-          			<td tabindex=5>Salty</td>
-          			<td tabindex=6>Erik</td>
-          			<td tabindex=7>Martens</td>
-          			<td tabindex=8>3IB</td>
-          			<td tabindex=9>1522840</td>
-      			</tr>
-      			<tr>
-              		<td>Salty</td>
-        			<td>Johannes</td>
-        			<td>Lotz</td>
-        			<td>3IB</td>
-        			<td>1525whatever</td>
-      			</tr>
- 			 </tbody>
-  		</table>
-  		<section id="status">
-			<p>Section 1</p>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-		</section>
-		<section id="tasks">
-			<p>Section 2</p>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-		</section>
-	</main>
+
+
+  <header id="header">
+    <h1><b contenteditable="true" tabindex=1>Salty - Group Website</b></h1>
+  </header>
+  
+
+  <menu id="menu">
+    <b>Menu</b>
+    <li><a href="http://google.com" tabindex="2" accesskey="a">Go to Google</a></li>
+    <li><a href="#status" tabindex="3">Go to Section "Status"</a></li>
+    <li><a href="#tasks" tabindex="4">Go to Section "Tasks"</a></li>
+  </menu> 
+
+
+  <main id="main">
+    <section id="status">
+      <p>Section 1</p>
+      <br>
+    </section>
+
+    <section id="tasks">
+      <p>Section 2</p>
+      <br>
+      <table id="status-overview">
+        <thead>
+          <tr>
+            <th>Gruppe</th>
+            <th>Vorname</th>
+            <th>Name</th>
+            <th>Studiengang</th>
+            <th>Matrikelnummer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td tabindex=5>Salty</td>
+            <td tabindex=6>Erik</td>
+            <td tabindex=7>Martens</td>
+            <td tabindex=8>3IB</td>
+            <td tabindex=9>1522840</td>
+          </tr>
+          <tr>
+            <td>Salty</td>
+            <td>Johannes</td>
+            <td>Lotz</td>
+            <td>3IB</td>
+            <td>1525whatever</td>
+          </tr>
+          <tr>
+            <td>Salty</td>
+            <td>Tülin</td>
+            <td>Kol</td>
+            <td>7IB</td>
+            <td>whatever</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+    </section>
+
+  </main>
 </body>
 </html>

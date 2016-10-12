@@ -1,13 +1,93 @@
-<head>
-	<style>
-		span { display: block; }
-		span.old { display: inline; text-decoration: line-through; }
-	</style>
-</head>
-<body>
-	<div>Dieses Element hat einen folgenden Absatz</div>
-	<p>Dieses Element ebenfalls</p>
-	<span style="background:red;color:blue;">Diese</span>
-	<span>Elemente</span>
-	<span><span class="old">nicht!</span> jetzt auch!</span>
-</body>
+#header{
+	height: 64px;
+}
+#menu{
+	position:fixed;
+	top: 64px;
+	right: 0px;
+	left: 0px;
+	bottom:0px;
+    width: 20%;
+    border: 0px solid transparent;
+    padding: 16px 0px 0px 20px;
+    margin: 0px;
+    background:green;
+}
+#main{
+	position:absolute;
+	top: 64px;
+	right: 0px;
+	bottom: 0px;
+	left: 20%;
+    border: 0px solid transparent;
+    padding: 0px 0px 0px 20px;
+	overflow:auto; 
+}
+section{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	left: 100%;
+	width: 100%;
+
+	transition: 2s left;
+	-webkit-transition: 2s left;
+}
+section:target{
+	left: 0%;
+}
+
+#status{
+    border: 1pt solid #000000;
+    padding: 16px 0px 0px 20px;
+    background:yellow;
+
+    /*-webkit-animation-name: status-animation;
+    -webkit-animation-duration: 4s;
+    animation-name: status-animation;
+    animation-duration: 4s;*/
+}
+
+#tasks{
+    border: 1pt solid #000000;
+    padding: 16px 0px 0px 20px;
+    background:lightblue;
+
+    /*-webkit-animation-name: tasks-animation;
+    -webkit-animation-duration: 4s;
+    animation-name: tasks-animation;
+    animation-duration: 4s;*/
+}
+
+#status-overview{
+	position:relative;
+	border-collapse:collapse;
+	border:3px solid #000000;
+	padding: 16px 0px 0px 20px;
+}
+#status-overview th{
+	border:5px solid #000000;
+}
+#status-overview td{
+	border:1px solid #000000;
+}
+
+a:hover { 
+    background-color: orange;
+}
+
+/* animations
+@-webkit-keyframes status-animation {
+    0% {left: 100%; height: 100%;}
+}
+@keyframes status-animation {
+    0% {left: 100%; height: 100%;}
+}
+@-webkit-keyframes tasks-animation {
+    0% {left 100%; height: 100%;}
+}
+@keyframes tasks-animation {
+	0% {left 100%; height: 100%;}
+}*/
