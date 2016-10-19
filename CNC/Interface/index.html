@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+  <title>WAW Semester 3</title>
+
 	<link rel="stylesheet" href="./design/index.css"/>
 	<link rel="stylesheet" media="print" href="./design/print.css"/>
+
+  <style type="text/css" media="screen"></style>
 
 	<meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,15 +14,68 @@
   <meta name="robots" content="noindex, follow">
   <meta name="viewport" content="width=device-width">
   <meta name="apple-mobile-web-app-capable" content="yes">
-
-  <title>HTML Live Coding #1</title>
-  
-  <style type="text/css" media="screen">
-    
-  </style>
 </head>
 <body>
 
+  <script>
+  /* für js fragen mdn wiki checken*/
+
+    var foo; /*hat auch intialwert "undefined"*/
+    var bar = undefined; /*undefined ist der intialwert, wenn man keinen wert vergibt*/
+
+    console.log(foo === bar); /*=== schaut ob objekt identisch (bessere formulierung folgt) ist*/
+    console.log(foo == bar); /*== überprüft auf gleichen inhalt*/
+    console.log("i is god");
+
+    console.log(typeof foo);
+    console.log(typeof bar);
+
+    foo = null;
+    console.log(foo === null)
+    console.log(typeof foo)
+
+    undefined == null /* ergebnis: true, denn sind von der gleichen art*/
+    undefined === null /*ergebnis: false, denn sind nicht von der gleichen identität, "===" führt einen toString aus und vergleicht die Ergebnisse*/
+    console.log("Object Tests 1");
+    console.log(foo instanceof Object)
+    foo = undefined
+    console.log(foo instanceof Object)
+    foo = new String("bar")
+    console.log(foo instanceof Object)
+
+    console.log("Object Tests 2");
+    bar = "bar"
+    console.log(bar == foo) /*true*/
+    console.log(bar === foo) /*false*/
+    console.log(foo instanceof Object) /*true*/
+    console.log(foo instanceof String) /*true*/
+    foo = "bar"
+    console.log(foo instanceof String) /*false*/
+    console.log(bar instanceof String) /*false*/
+    console.log(bar == foo) /*true*/
+    console.log(bar === foo) /*true*/
+
+
+    /*instanceof  vergleicht den typ/klasse einer variablen mit einem gegebenen Typ, im hintergrund arbeitet quasi folgende funktion:*/
+
+    var myinstanceof = function(a,b) {
+      var p = Object.getPrototypeOf(a);
+      var p2 = Object.getPrototypeOf(b); // for var ... in (um deie prototype chain)
+      return p === p2;
+    }
+  
+    /*prototype chain bezeichnet die "vererbeungshierarchie" bzw. ist analog zu einem c-smartpointer*/
+    foo = new String("foo");
+    var protoOfFoo = Object.getPrototypeOf(foo);
+    console.log(protoOfFoo);
+    foo = "foo";
+    var protoOfFoo = Object.getPrototypeOf(foo);
+    console.log(protoOfFoo);
+
+
+    
+
+  </script>
 
   <header id="header">
     <h1><b contenteditable="true" tabindex=1>Salty - Group Website</b></h1>

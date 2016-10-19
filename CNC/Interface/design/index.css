@@ -32,8 +32,11 @@ section{
 	left: 100%;
 	width: 100%;
 
-	transition: 2s left;
-	-webkit-transition: 2s left;
+	transition: 0s left;
+	-webkit-transition: 0s left;
+	/*animation läuft tatsächlich nur auf die hälfte des section areals, dies war der lerneffekt
+	grund: browser springt erst zu section und animiert dann, da die section dann schon quasi am zielort ist, läuft die animation nicht mehr richtig ab
+	Setz man die transition auf 0 sec funktioniert es (meistens)*/
 }
 section:target{
 	left: 0%;
