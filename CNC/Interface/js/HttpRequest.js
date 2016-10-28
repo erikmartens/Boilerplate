@@ -62,3 +62,43 @@ function fillTable() {
     }
 
 }
+
+$(document).ready(function()
+{
+    $("#MenuHome").on("click",  function()
+    {
+        $("#SectionHome").show();
+        $("#SectionStatus").hide();
+        $("#SectionTask").hide();
+
+        $("#MenuHome").parent().addClass("active");
+        $("#MenuStatus").parent().removeClass("active");
+        $("#MenuTask").parent().removeClass("active");
+
+    });
+
+    $("#MenuStatus").on("click", function()
+    {
+        $("#SectionHome").hide();
+        $("#SectionStatus").show();
+        $("#SectionTask").hide();
+
+        $("#MenuHome").parent().removeClass("active");
+        $("#MenuStatus").parent().addClass("active");
+        $("#MenuTask").parent().removeClass("active");
+    });
+
+    $("#MenuTask").on("click", function()
+    {
+        $("#SectionHome").hide();
+        $("#SectionStatus").hide();
+        $("#SectionTask").show();
+
+        $("#MenuHome").parent().removeClass("active");
+        $("#MenuStatus").parent().removeClass("active");
+        $("#MenuTask").parent().addClass("active");
+    });
+
+    $("#MenuHome").click();
+
+});
