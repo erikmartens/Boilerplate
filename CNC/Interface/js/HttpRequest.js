@@ -4,8 +4,8 @@
 
 var data;
 
-function HttpRequest() {
-
+function HttpRequest()
+{
     var xhr = new XMLHttpRequest();
 
     xhr.open('GET', 'http://botnet.artificial.engineering:80/api/Status');
@@ -21,14 +21,12 @@ function HttpRequest() {
             console.log(data); // Parsed JSON object
 
         fillTable();
-
     };
-
     xhr.send(null);
 }
 
-function fillTable() {
-
+function fillTable()
+{
     //dummydaten
     if(data === null || data === undefined)
         data =
@@ -60,7 +58,6 @@ function fillTable() {
 
         element.appendChild(row);
     }
-
 }
 
 $(document).ready(function()
