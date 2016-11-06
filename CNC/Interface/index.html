@@ -12,7 +12,6 @@
   <meta name="viewport" content="width=device-width">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
-<<<<<<< Updated upstream
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -23,19 +22,11 @@
 
   <script src="js/HttpRequest.js"></script>
 </head>
+
 <body>
-<script type="application/javascript">
-  HttpRequest();
-</script>
-=======
-</head>
-<body>
->>>>>>> Stashed changes
-  <header id="header">
-    <h1><strong>Salty - Group Website</strong></h1>
-    <hr>
-  </header>
-<<<<<<< Updated upstream
+  <script type="application/javascript">
+    HttpRequest();
+  </script>
   <div class="content">
       <div class="row">
         <div class="col-lg-3 col-md-3 col-sm-3"">
@@ -77,122 +68,5 @@
         </div>
       </div>
   </div>
-=======
-  
-
-  <menu id="menu">
-    <b>Menu</b>
-    <li><a href="http://google.com" tabindex="2" accesskey="a">Go to Google</a></li>
-    <li><a href="#status" tabindex="3">Go to Section "Status"</a></li>
-    <li><a href="#tasks" tabindex="4">Go to Section "Tasks"</a></li>
-  </menu> 
-
-
-  <main id="main">
-    <section id="status">
-      <p>Section 1</p>
-      <br>
-    </section>
-
-    <section id="tasks">
-      <p>Section 2</p>
-      <br>
-      <table id="status-overview">
-        <thead>
-          <tr>
-            <th>Gruppe</th>
-            <th>Vorname</th>
-            <th>Name</th>
-            <th>Studiengang</th>
-            <th>Matrikelnummer</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td tabindex=5>Salty</td>
-            <td tabindex=6>Erik</td>
-            <td tabindex=7>Martens</td>
-            <td tabindex=8>3IB</td>
-            <td tabindex=9>1522840</td>
-          </tr>
-          <tr>
-            <td>Salty</td>
-            <td>Johannes</td>
-            <td>Lotz</td>
-            <td>3IB</td>
-            <td>1525whatever</td>
-          </tr>
-          <tr>
-            <td>Salty</td>
-            <td>Tülin</td>
-            <td>Kol</td>
-            <td>7IB</td>
-            <td>whatever</td>
-          </tr>
-        </tbody>
-      </table>
-      <br>
-    </section>
-
-  </main>
-  
-<script src="xhr.js"></script>
-<script>
-  /* für js fragen mdn wiki checken*/
-
-    var foo; /*hat auch intialwert "undefined"*/
-    var bar = undefined; /*undefined ist der intialwert, wenn man keinen wert vergibt*/
-
-    console.log(foo === bar); /*=== schaut ob objekt identisch (bessere formulierung folgt) ist*/
-    console.log(foo == bar); /*== überprüft auf gleichen inhalt*/
-    console.log("i is god");
-
-    console.log(typeof foo);
-    console.log(typeof bar);
-
-    foo = null;
-    console.log(foo === null)
-    console.log(typeof foo)
-
-    undefined == null /* ergebnis: true, denn sind von der gleichen art*/
-    undefined === null /*ergebnis: false, denn sind nicht von der gleichen identität, "===" führt einen toString aus und vergleicht die Ergebnisse*/
-    console.log("Object Tests 1");
-    console.log(foo instanceof Object)
-    foo = undefined
-    console.log(foo instanceof Object)
-    foo = new String("bar")
-    console.log(foo instanceof Object)
-
-    console.log("Object Tests 2");
-    bar = "bar"
-    console.log(bar == foo) /*true*/
-    console.log(bar === foo) /*false*/
-    console.log(foo instanceof Object) /*true*/
-    console.log(foo instanceof String) /*true*/
-    foo = "bar"
-    console.log(foo instanceof String) /*false*/
-    console.log(bar instanceof String) /*false*/
-    console.log(bar == foo) /*true*/
-    console.log(bar === foo) /*true*/
-
-
-    /*instanceof  vergleicht den typ/klasse einer variablen mit einem gegebenen Typ, im hintergrund arbeitet quasi folgende funktion:*/
-
-    var myinstanceof = function(a,b) {
-      var p = Object.getPrototypeOf(a);
-      var p2 = Object.getPrototypeOf(b); // for var ... in (um deie prototype chain)
-      return p === p2;
-    }
-  
-    /*prototype chain bezeichnet die "vererbeungshierarchie" bzw. ist analog zu einem c-smartpointer*/
-    foo = new String("foo");
-    var protoOfFoo = Object.getPrototypeOf(foo);
-    console.log(protoOfFoo);
-    foo = "foo";
-    var protoOfFoo = Object.getPrototypeOf(foo);
-    console.log(protoOfFoo);
-  </script>
-
->>>>>>> Stashed changes
 </body>
 </html>
