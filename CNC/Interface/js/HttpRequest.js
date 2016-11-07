@@ -43,18 +43,34 @@ function fillTable()
                 "Workload": "3IB"
             }];
 
-    for(var i =0; i<data.length; i++)
+    for(var i =0; i < data.length; i++)
     {
         var element = document.getElementById("TableToFill");
         var row = document.createElement("tr");
 
-        for(var a in data[i])
+        var workload = document.createElement("td");
+        workload.innerHTML = data[i]["workload"];
+        row.appendChild(workload);
+
+        var ip = document.createElement("td");
+        ip.innerHTML = data[i]["ip"];
+        row.appendChild(ip);
+
+        var id = document.createElement("td");
+        id.innerHTML = data[i]["id"];
+        row.appendChild(id);
+
+        var task = document.createElement("td");
+        task.innerHTML = data[i]["task"];
+        row.appendChild(task);
+
+
+        /*for(var a in data[i])
         {
             var column = document.createElement("td");
             column.innerHTML = data[i][a];
             row.appendChild(column);
-            console.log("Key: " + a + ", Value: " + data[i][a]);
-        }
+        }*/
 
         element.appendChild(row);
     }
