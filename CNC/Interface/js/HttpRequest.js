@@ -25,9 +25,14 @@ function HttpRequest()
     xhr.send(null);
 }
 
+function HttpRequestPost()
+{
+
+}
+
 function fillTable()
 {
-    //dummydaten
+    //Dummydaten
     if(data === null || data === undefined)
         data =
             [{
@@ -42,6 +47,12 @@ function fillTable()
                 "Task": "Lutz",
                 "Workload": "3IB"
             }];
+
+    //var thead  = '<tr><th>' + Object.keys(data[0]).join('</trth><th>') + '</th></tr>';
+
+    //var tbody  = '<tr>' + data.map((val, index) => {
+    //    return '<td>' + val.id + '</td><td>' + val.ip + '</td>...';
+    // }).join('</tr><tr>') + '</tr>';
 
     for(var i =0; i < data.length; i++)
     {
