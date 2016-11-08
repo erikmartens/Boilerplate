@@ -4,3 +4,5 @@
 /CNC/Server/node_modules
 /.idea/*
 
+*.sublime-workspace
+# *.sublime-project
