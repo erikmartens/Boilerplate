@@ -2,13 +2,22 @@
  * Created by tuxlin on 28/10/16.
  */
 
-var data;
+var dataStatus;
+var dataTasks;
 
 function HttpRequest()
 {
+   dataStatus = pullData("Status");
+   dataTasks = pullData("Tasks");
+}
+
+function pullData(target) {
+
+    var data;
+
     var xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'http://botnet.artificial.engineering:80/api/Status');
+    xhr.open('GET', 'http://botnet.artificial.engineering:80/api/' + target);
 
     xhr.responseType = 'json';
     xhr.setRequestHeader('Content-Type', 'application/json');
@@ -20,17 +29,19 @@ function HttpRequest()
         if (data !== null)
             console.log(data); // Parsed JSON object
 
-        fillTable();
+        fillTable(target, data);
     };
     xhr.send(null);
+
+    return data;
 }
 
 function HttpRequestPost()
 {
-    /*if(data[]["task"] == 1)*/
+    
 }
 
-function fillTable()
+function fillTable(target, data)
 {
     //Dummydaten
     if(data === null || data === undefined)
@@ -53,48 +64,64 @@ function fillTable()
     //var tbody  = '<tr>' + data.map((val, index) => {
     //    return '<td>' + val.id + '</td><td>' + val.ip + '</td>...';
     // }).join('</tr><tr>') + '</tr>';
+    var headers;
+    var id;
+    if(target == "Status") 
+    {
+        headers = ["workload", "ip", "id", "task"]
+        id = "StatusTableToFill";
+    }
+    else
+    {
+        headers = ["id", "type", "input", "output"]
+        id = "TasksTableToFill";
+    }
 
     for(var i =0; i < data.length; i++)
     {
-        var element = document.getElementById("TableToFill");
+        var element = document.getElementById(id);
         var row = document.createElement("tr");
 
         var workload = document.createElement("td");
-        workload.innerHTML = data[i]["workload"];
+        workload.innerHTML = data[i][headers[0]];
         row.appendChild(workload);
 
         var ip = document.createElement("td");
-        ip.innerHTML = data[i]["ip"];
+        ip.innerHTML = data[i][headers[1]];
         row.appendChild(ip);
 
-        var id = document.createElement("td");
-        id.innerHTML = data[i]["id"];
-        row.appendChild(id);
-
-        var task = document.createElement("td");
-        task.innerHTML = data[i]["task"];
-        row.appendChild(task);
-
-        var button = document.createElement("td");
-        if(data[i]["task"] == 1) 
+        if(target == "Status") 
         {
-            button.innerHTML = "<button onclick='toggleStartStop(this)'>Stop</button>";
+            var id = document.createElement("td");
+            id.innerHTML = data[i][headers[2]];
+            row.appendChild(id);
+
+            var task = document.createElement("td");
+            task.innerHTML = data[i][headers[3]];
+            row.appendChild(task);
+
+            var button = document.createElement("td");
+            if(data[i]["task"] == 1) 
+            {
+                button.innerHTML = "<button onclick='toggleStartStop(this)'>Stop</button>";
+            }
+            else 
+            {
+                button.innerHTML = "<button onclick='toggleStartStop(this)'>Start</button>";
+            }
+            row.appendChild(button);
         }
-        else 
+        else
         {
-            button.innerHTML = "<button onclick='toggleStartStop(this)'>Start</button>";
+            var task = document.createElement("td");
+            task.innerHTML = data[i]["data"][headers[2]];
+            row.appendChild(task);
+
+            var task = document.createElement("td");
+            task.innerHTML = data[i]["data"][headers[3]];
+            row.appendChild(task);
         }
-
-        /*button.innerHTML = "<button onclick='toggleStartStop(this)'>Start</button>";*/
-        row.appendChild(button);
-        
-        /*for(var a in data[i])
-        {
-            var column = document.createElement("td");
-            column.innerHTML = data[i][a];
-            row.appendChild(column);
-        }*/
-
+        console.log(row);
         element.appendChild(row);
     }
 }
@@ -111,8 +138,6 @@ function toggleStartStop(button)
         HttpRequestPost();
     }
 }
-
-
 
 $(document).ready(function()
 {
