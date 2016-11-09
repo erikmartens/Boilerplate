@@ -27,7 +27,7 @@ function HttpRequest()
 
 function HttpRequestPost()
 {
-
+    /*if(data[]["task"] == 1)*/
 }
 
 function fillTable()
@@ -75,7 +75,19 @@ function fillTable()
         task.innerHTML = data[i]["task"];
         row.appendChild(task);
 
+        var button = document.createElement("td");
+        if(data[i]["task"] == 1) 
+        {
+            button.innerHTML = "<button onclick='toggleStartStop(this)'>Stop</button>";
+        }
+        else 
+        {
+            button.innerHTML = "<button onclick='toggleStartStop(this)'>Start</button>";
+        }
 
+        /*button.innerHTML = "<button onclick='toggleStartStop(this)'>Start</button>";*/
+        row.appendChild(button);
+        
         /*for(var a in data[i])
         {
             var column = document.createElement("td");
@@ -86,6 +98,21 @@ function fillTable()
         element.appendChild(row);
     }
 }
+function toggleStartStop(button) 
+{
+    if(button.innerHTML == "Stop") 
+    {
+        button.innerHTML = "Start";
+        HttpRequestPost();
+    }
+    else
+    {
+        button.innerHTML = "Stop";
+        HttpRequestPost();
+    }
+}
+
+
 
 $(document).ready(function()
 {
