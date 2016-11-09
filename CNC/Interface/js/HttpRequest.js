@@ -77,9 +77,11 @@ function fillTable(target, data)
         id = "TasksTableToFill";
     }
 
+    var element = document.getElementById(id);
+
     for(var i =0; i < data.length; i++)
     {
-        var element = document.getElementById(id);
+        
         var row = document.createElement("tr");
 
         var workload = document.createElement("td");
@@ -92,6 +94,7 @@ function fillTable(target, data)
 
         if(target == "Status") 
         {
+            console.log("Processing " +i);
             var id = document.createElement("td");
             id.innerHTML = data[i][headers[2]];
             row.appendChild(id);
