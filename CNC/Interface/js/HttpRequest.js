@@ -5,11 +5,11 @@
 var dataStatus;
 var dataTasks;
 
-function HttpRequest()
-{
-   dataStatus = pullData("Status");
-   dataTasks = pullData("Tasks");
-}
+pullData("Status");
+pullData("Tasks");
+setInterval(function() {
+    refreshOnInterval();
+}, 5000);
 
 function pullData(target) {
 
@@ -30,10 +30,17 @@ function pullData(target) {
             console.log(data); // Parsed JSON object
 
         fillTable(target, data);
+        if(target == "Status") 
+        {
+            dataStatus = data;
+        }
+        else
+        {
+            dataTasks = data;
+        }
+
     };
     xhr.send(null);
-
-    return data;
 }
 
 function HttpRequestPost()
@@ -81,7 +88,6 @@ function fillTable(target, data)
 
     for(var i =0; i < data.length; i++)
     {
-        
         var row = document.createElement("tr");
 
         var workload = document.createElement("td");
@@ -128,6 +134,23 @@ function fillTable(target, data)
         element.appendChild(row);
     }
 }
+function sortByID()
+{
+    console.log(dataStatus);
+    dataStatus.sort(function(a, b) {
+        return b.id - a.id;     
+    })
+    refreshOnInterval();
+}
+
+function refreshOnInterval()
+{
+    var table = document.getElementById("StatusTableToFill");
+    table.innerHTML = "";
+
+    fillTable("Status", dataStatus);
+}
+
 function toggleStartStop(button) 
 {
     if(button.innerHTML == "Stop") 
