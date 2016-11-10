@@ -43,9 +43,21 @@ function pullData(target) {
     xhr.send(null);
 }
 
-function HttpRequestPost()
+function postData(id, setting)
 {
-    
+    var data = {
+        id: id,
+        status: setting
+    };
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://botnet.artificial.engineering:80/api/Status/:' + id, true);
+
+    xhr.responseType = 'json';
+    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xhr.setRequestHeader('Token', 'c157a79031e1c40f85931829bc5fc552')
+
+    xhr.send(JSON.stringify(data));
 }
 
 function fillTable(target, data)
@@ -143,12 +155,20 @@ function sortByID()
     refreshOnInterval();
 }
 
-function refreshOnInterval()
+function reload()
 {
     var table = document.getElementById("StatusTableToFill");
     table.innerHTML = "";
 
     fillTable("Status", dataStatus);
+}
+
+function refreshOnInterval()
+{
+    var table = document.getElementById("StatusTableToFill");
+    table.innerHTML = "";
+
+    pullData("Status");
 }
 
 function refreshOnButtonPress() 
@@ -164,12 +184,16 @@ function toggleStartStop(button)
     if(button.innerHTML == "Stop") 
     {
         button.innerHTML = "Start";
-        HttpRequestPost();
+        dataStatus[(button.parentNode.parentNode.rowIndex - 1)]["task"] = 0;
+        postData((button.parentNode.parentNode.rowIndex - 1), false);
+        reload();
     }
     else
     {
         button.innerHTML = "Stop";
-        HttpRequestPost();
+        dataStatus[(button.parentNode.parentNode.rowIndex - 1)]["task"] = 1;
+        postData((button.parentNode.parentNode.rowIndex - 1), true);
+        reload();
     }
 }
 
@@ -208,7 +232,5 @@ $(document).ready(function()
         $("#MenuStatus").parent().removeClass("active");
         $("#MenuTask").parent().addClass("active");
     });
-
     $("#MenuHome").click();
-
 });
