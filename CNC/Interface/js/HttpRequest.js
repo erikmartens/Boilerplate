@@ -90,24 +90,24 @@ function fillTable(target, data)
     {
         var row = document.createElement("tr");
 
-        var workload = document.createElement("td");
-        workload.innerHTML = data[i][headers[0]];
-        row.appendChild(workload);
+        var col_1 = document.createElement("td");
+        col_1.innerHTML = data[i][headers[0]];
+        row.appendChild(col_1);
 
-        var ip = document.createElement("td");
-        ip.innerHTML = data[i][headers[1]];
-        row.appendChild(ip);
+        var col_2 = document.createElement("td");
+        col_2.innerHTML = data[i][headers[1]];
+        row.appendChild(col_2);
 
         if(target == "Status") 
         {
             console.log("Processing " +i);
-            var id = document.createElement("td");
-            id.innerHTML = data[i][headers[2]];
-            row.appendChild(id);
+            var col_3 = document.createElement("td");
+            col_3.innerHTML = data[i][headers[2]];
+            row.appendChild(col_3);
 
-            var task = document.createElement("td");
-            task.innerHTML = data[i][headers[3]];
-            row.appendChild(task);
+            var col_4 = document.createElement("td");
+            col_4.innerHTML = data[i][headers[3]];
+            row.appendChild(col_4);
 
             var button = document.createElement("td");
             if(data[i]["task"] == 1) 
@@ -122,13 +122,13 @@ function fillTable(target, data)
         }
         else
         {
-            var task = document.createElement("td");
-            task.innerHTML = data[i]["data"][headers[2]];
-            row.appendChild(task);
+            var col_3 = document.createElement("td");
+            col_3.innerHTML = data[i]["data"][headers[2]];
+            row.appendChild(col_3);
 
-            var task = document.createElement("td");
-            task.innerHTML = data[i]["data"][headers[3]];
-            row.appendChild(task);
+            var col_4 = document.createElement("td");
+            col_4.innerHTML = data[i]["data"][headers[3]];
+            row.appendChild(col_4);
         }
         console.log(row);
         element.appendChild(row);
@@ -149,6 +149,14 @@ function refreshOnInterval()
     table.innerHTML = "";
 
     fillTable("Status", dataStatus);
+}
+
+function refreshOnButtonPress() 
+{
+    var table = document.getElementById("StatusTableToFill");
+    table.innerHTML = "";
+
+    pullData("Status");
 }
 
 function toggleStartStop(button) 
