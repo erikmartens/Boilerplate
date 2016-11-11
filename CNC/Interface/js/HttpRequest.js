@@ -51,11 +51,11 @@ function postData(id, setting)
     };
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://botnet.artificial.engineering:80/api/Status/:' + id, true);
+    xhr.open('POST', 'http://botnet.artificial.engineering/api/Status', true);
 
     xhr.responseType = 'json';
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    xhr.setRequestHeader('Token', 'c157a79031e1c40f85931829bc5fc552')
+    //xhr.setRequestHeader('Token', 'c157a79031e1c40f85931829bc5fc552')
 
     xhr.send(JSON.stringify(data));
 }
