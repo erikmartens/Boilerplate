@@ -18,7 +18,8 @@
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-  <script src="js/HttpRequest.js"></script>
+  <script src="js/Status.js"></script>
+    <script src="js/Tasks.js"></script>
 </head>
 <body>
 <script type="application/javascript"></script>
@@ -52,7 +53,7 @@
                   <th>IP</th>
                   <th onclick="sortByID()">Auftrag</th>
                   <th>Aktiv/Inaktiv</th>
-                  <th>Toggle</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody id="StatusTableToFill">
@@ -61,7 +62,7 @@
             </section>
             <section id="SectionTask">
               <h1>Tasks</h1>
-              <button onclick="refreshOnButtonPress()">Refresh</button>
+              <button class="btn btn-lg btn-success" onclick="refreshOnButtonPress()">Refresh</button>
               <table id="tasks-overview" class="table table-striped">
                 <thead>
                 <tr>
@@ -81,7 +82,7 @@
 				<option>hash-sha256</option>
 				<option>crack-md5</option>
  			  </select>
-			  <button onclick="postTasksData()">Send Task</button>
+			  <button class="btn btn-lg btn-primary" onclick="postTasksData()">Send Task</button>
             </section>
           </div>
         </div>
