@@ -14,9 +14,9 @@ function getData(target, sortField, handleData)
     xhr.responseType = 'json';
     xhr.setRequestHeader('Content-Type', 'application/json');
 
-    xhr.onload = function ()
+    xhr.onload = ()=>
     {
-        var data = xhr.response;
+        let data = xhr.response;
 
         if (data === null)
             return;
