@@ -22,21 +22,20 @@ function getData(target, sortField, handleData)
             return;
 
         //Sorting standard values
-        if(sortField != "ip") 
+        if(sortField == "ip") 
         {
-        	data.sort(function(a, b) { return a[sortField] - b[sortField]; });
-		}
-		//Use a special sort function while sorting IPs
-		else
-		{
-			data.sort(function(a, b) 
+        	data.sort(function(a, b) 
 			{ 
 				var aIP = parseIP(a[sortField]);
 				var bIP = parseIP(b[sortField]);
 
 				return aIP - bIP; 
 			});
-			
+		}
+		//Use a special sort function while sorting IPs
+		else
+		{
+			data.sort(function(a, b) { return a[sortField] - b[sortField]; });			
 		}
         if(typeof(handleData) === "function")
             handleData(data);
@@ -130,8 +129,9 @@ function refresh() {
 }
 function parseIP(ip)
 {
+	var ipSegments = ip.split(".");
 	//Parse IPv4
-	if((ipSegments = ip.split(".")).length > 1)
+	if(ipSegments.length > 1)
 	{
 		//Get binary values of ip segements
 		for(var i = 0; i < ipSegments.length; i++)
@@ -143,15 +143,17 @@ function parseIP(ip)
 		{
 			if(ipSegments[i].length < 8)
 			{
-				ipSegements[i] = "00000000".substr(ipSegments[i].length) + ipSegments[i];
+				ipSegments[i] = "00000000".substr(ipSegments[i].length) + ipSegments[i];
 			}
 		}
+		console.log(parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2));
 		//Return concatenated ip (binary representation) as an integer (it's always 4 segements)
 		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2);
 	}
 	//Parse IPv6
-	else if((ipSegments = ip.split(":")).length > 1)
+	else
 	{
+		ipSegments = ip.split(":");
 		//Getting rid of "/64" tail and splitting the rest
 		ipSegments = ip.split("/")[0].split(":");
 
@@ -165,9 +167,10 @@ function parseIP(ip)
 		{
 			if(ipSegments[i].length < 8)
 			{
-				ipSegements[i] = "0000000000000000".substr(ipSegments[i].length) + ipSegments[i];
+				ipSegments[i] = "0000000000000000".substr(ipSegments[i].length) + ipSegments[i];
 			}
 		}
+		console.log(parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2));
 		//Return concatenated ip (binary representation) as an integer (it's always 4 segements)
 		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2);
 	}
