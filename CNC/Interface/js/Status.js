@@ -21,8 +21,21 @@ function getData(target, sortField, handleData)
         if (data === null)
             return;
 
-        data.sort(function(a, b) { return a[sortField] - b[sortField]; });
+        if(sortField != "ip") 
+        {
+        	data.sort(function(a, b) { return a[sortField] - b[sortField]; });
+		}
+		else
+		{
+			data.sort(function(a, b) 
+			{ 
+				var aIP = parseIP(a[sortField]);
+				var bIP = parseIP(b[sortField]);
 
+				return aIP - bIP; 
+			});
+			
+		}
         if(typeof(handleData) === "function")
             handleData(data);
     };
@@ -112,4 +125,8 @@ function refresh() {
             postData(parseInt(toggleID), !state);
         });
     });
+}
+function parseIP(ip)
+{
+	
 }
