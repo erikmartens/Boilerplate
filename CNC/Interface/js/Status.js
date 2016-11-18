@@ -128,5 +128,27 @@ function refresh() {
 }
 function parseIP(ip)
 {
-	
+	//Parse IPv4
+	if((ipSegments = ip.split(".")).length > 1)
+	{
+		//Get binary values of ip segements
+		for(var i = 0; i < ipSegments.length; i++)
+		{
+			ipSegments[i] = parseInt(ipSegments[i]).toString(2);
+		}
+		//Fill up to comply with full 8 bit representation per segment
+		for(var i = 0; i < ipSegments.length; i++)
+		{
+			if(ipSegments[i].length < 8)
+			{
+				ipSegements[i] = "00000000".substr(ipSegments[i].length) + ipSegments[i];
+			}
+		}
+		//Return concatenated ip (binary representation) as an integer (it's always 4 segements)
+		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2);
+	}
+	else if((ipSegments = ip.split(":")).length > 1)
+	{
+		
+	}
 }
