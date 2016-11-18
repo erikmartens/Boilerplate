@@ -21,10 +21,12 @@ function getData(target, sortField, handleData)
         if (data === null)
             return;
 
+        //Sorting standard values
         if(sortField != "ip") 
         {
         	data.sort(function(a, b) { return a[sortField] - b[sortField]; });
 		}
+		//Use a special sort function while sorting IPs
 		else
 		{
 			data.sort(function(a, b) 
@@ -147,8 +149,26 @@ function parseIP(ip)
 		//Return concatenated ip (binary representation) as an integer (it's always 4 segements)
 		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2);
 	}
+	//Parse IPv6
 	else if((ipSegments = ip.split(":")).length > 1)
 	{
-		
+		//Getting rid of "/64" tail and splitting the rest
+		ipSegments = ip.split("/")[0].split(":");
+
+		//Get binary values of ip segements
+		for(var i = 0; i < ipSegments.length; i++)
+		{
+			ipSegments[i] = parseInt(ipSegments[i], 16).toString(2);
+		}
+		//Fill up to comply with full 16 bit representation per segment
+		for(var i = 0; i < ipSegments.length; i++)
+		{
+			if(ipSegments[i].length < 8)
+			{
+				ipSegements[i] = "0000000000000000".substr(ipSegments[i].length) + ipSegments[i];
+			}
+		}
+		//Return concatenated ip (binary representation) as an integer (it's always 4 segements)
+		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2);
 	}
 }
