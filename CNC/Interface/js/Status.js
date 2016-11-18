@@ -146,7 +146,6 @@ function parseIP(ip)
 				ipSegments[i] = "00000000".substr(ipSegments[i].length) + ipSegments[i];
 			}
 		}
-		console.log(parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2));
 		//Return concatenated ip (binary representation) as an integer (it's always 4 segements)
 		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2);
 	}
@@ -170,7 +169,6 @@ function parseIP(ip)
 				ipSegments[i] = "0000000000000000".substr(ipSegments[i].length) + ipSegments[i];
 			}
 		}
-		console.log(parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2));
 		//Return concatenated ip (binary representation) as an integer (it's always 4 segements)
 		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2);
 	}
