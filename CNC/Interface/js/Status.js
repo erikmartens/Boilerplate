@@ -145,12 +145,14 @@ function parseIP(ip)
 			{
 				ipSegments[i] = "00000000".substr(ipSegments[i].length) + ipSegments[i];
 			}
-		}	
+		}
+        //Return concatenated ip (binary representation) as an integer (it's always 4 segements)
+        return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] + ipSegments[3]), 2);	
 	}
 	//Parse IPv6
 	else
 	{
-		//Getting rid of "/64" tail and splitting the rest
+        //Getting rid of "/64" tail and splitting the rest
 		ipSegments = ip.split("/")[0].split(":");
 
 		//Get binary values of ip segements
@@ -166,7 +168,7 @@ function parseIP(ip)
 				ipSegments[i] = "0000000000000000".substr(ipSegments[i].length) + ipSegments[i];
 			}
 		}
+        //Return concatenated ip (binary representation) as an integer (it's always 8 segements)
+        return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] + ipSegments[3] + ipSegments[4] + ipSegments[5] + ipSegments[6] + ipSegments[7]), 2);
 	}
-	//Return concatenated ip (binary representation) as an integer (it's always 4 segements)
-	return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] +ipSegments[3]), 2);
 }
