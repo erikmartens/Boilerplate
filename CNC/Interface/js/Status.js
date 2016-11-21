@@ -150,7 +150,6 @@ function parseIP(ip)
 	//Parse IPv6
 	else
 	{
-		ipSegments = ip.split(":");
 		//Getting rid of "/64" tail and splitting the rest
 		ipSegments = ip.split("/")[0].split(":");
 
