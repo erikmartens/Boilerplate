@@ -6,24 +6,20 @@ setInterval(function() {
     refresh();
 }, 10000);
 
-function getData(target, sortField, handleData)
-{
+function getData(target, sortField, handleData) {
     var xhr = new XMLHttpRequest();
 
     xhr.open('GET', 'http://botnet.artificial.engineering:80/api/' + target);
     xhr.responseType = 'json';
     xhr.setRequestHeader('Content-Type', 'application/json');
 
-    xhr.onload = ()=>
-    {
+    xhr.onload = () => {
         let data = xhr.response;
 
-        if (data === null)
-            return;
+        if(data === null) return;
 
         //Sorting standard values
-        if(sortField == "ip") 
-        {
+        if(sortField == "ip") {
         	data.sort(function(a, b) 
 			{ 
 				var aIP = parseIP(a[sortField]);
@@ -33,9 +29,10 @@ function getData(target, sortField, handleData)
 			});
 		}
 		//Use a special sort function while sorting IPs
-		else
-		{
-			data.sort(function(a, b) { return a[sortField] - b[sortField]; });			
+		else {
+			data.sort(function(a, b) { 
+                return a[sortField] - b[sortField]; 
+            });			
 		}
         if(typeof(handleData) === "function")
             handleData(data);
@@ -45,8 +42,7 @@ function getData(target, sortField, handleData)
 }
 
 //Post Request fuer Toggle Button
-function postData(id, setting)
-{
+function postData(id, setting) {
     var data = {
         id: id,
         status: setting
@@ -62,11 +58,9 @@ function postData(id, setting)
     xhr.send(JSON.stringify(data));
 }
 
-$(document).ready(function()
-{
+$(document).ready(function() {
 
-    $("#MenuHome").on("click",  function()
-    {
+    $("#MenuHome").on("click",  function() {
         $("#SectionHome").show();
         $("#SectionStatus").hide();
         $("#SectionTask").hide();
@@ -77,8 +71,7 @@ $(document).ready(function()
 
     });
 
-    $("#MenuStatus").on("click", function()
-    {
+    $("#MenuStatus").on("click", function() {
         $("#SectionHome").hide();
         $("#SectionStatus").show();
         $("#SectionTask").hide();
@@ -88,8 +81,7 @@ $(document).ready(function()
         $("#MenuTask").parent().removeClass("active");
     });
 
-    $("#MenuTask").on("click", function()
-    {
+    $("#MenuTask").on("click", function() {
         $("#SectionHome").hide();
         $("#SectionStatus").hide();
         $("#SectionTask").show();
@@ -106,19 +98,16 @@ $(document).ready(function()
 function refresh() {
     $("#StatusTableToFill").html("");
 
-    getData("Status", "ip", function (data)
-    {
+    getData("Status", "ip", function (data) {
         // $("#statustabletofill").innerHTML("<tr><th>" + Object.keys(data[0]).join("</th><th>") + "</th></tr>"); // HEAD
-        $("#StatusTableToFill").html("<tr>" + data.map(function(val, index)
-            {
+        $("#StatusTableToFill").html("<tr>" + data.map(function(val, index) {
                 var buttonText = val.workload != 0 ? "Stop" : "Start";
 
                 return "<td>" + val.workload + "</td><td>" + val.ip + "</td><td>" + val.id + "</td><td>" + val.task +"</td>"
                     + "<td><button toggle-id='" + val.id + "' class='btn btn-danger'>" + buttonText + "</button></td>";
             }).join("</tr><tr>") + "</tr>");
 
-        $("#StatusTableToFill").find("button").on("click", function()
-        {
+        $("#StatusTableToFill").find("button").on("click", function() {
             var toggleID = $(this).attr("toggle-id"); // determine the id of the clicked button
             var state = $(this).text() !== "Start";
 
@@ -127,22 +116,17 @@ function refresh() {
         });
     });
 }
-function parseIP(ip)
-{
+function parseIP(ip) {
 	var ipSegments = ip.split(".");
 	//Parse IPv4
-	if(ipSegments.length > 1)
-	{
+	if(ipSegments.length > 1) {
 		//Get binary values of ip segements
-		for(var i = 0; i < ipSegments.length; i++)
-		{
+		for(var i = 0; i < ipSegments.length; i++) {
 			ipSegments[i] = parseInt(ipSegments[i]).toString(2);
 		}
 		//Fill up to comply with full 8 bit representation per segment
-		for(var i = 0; i < ipSegments.length; i++)
-		{
-			if(ipSegments[i].length < 8)
-			{
+		for(var i = 0; i < ipSegments.length; i++) {
+			if(ipSegments[i].length < 8) {
 				ipSegments[i] = "00000000".substr(ipSegments[i].length) + ipSegments[i];
 			}
 		}
@@ -150,21 +134,17 @@ function parseIP(ip)
         return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] + ipSegments[3]), 2);	
 	}
 	//Parse IPv6
-	else
-	{
+	else {
         //Getting rid of "/64" tail and splitting the rest
 		ipSegments = ip.split("/")[0].split(":");
 
 		//Get binary values of ip segements
-		for(var i = 0; i < ipSegments.length; i++)
-		{
+		for(var i = 0; i < ipSegments.length; i++) {
 			ipSegments[i] = parseInt(ipSegments[i], 16).toString(2);
 		}
 		//Fill up to comply with full 16 bit representation per segment
-		for(var i = 0; i < ipSegments.length; i++)
-		{
-			if(ipSegments[i].length < 8)
-			{
+		for(var i = 0; i < ipSegments.length; i++) {
+			if(ipSegments[i].length < 8) {
 				ipSegments[i] = "0000000000000000".substr(ipSegments[i].length) + ipSegments[i];
 			}
 		}

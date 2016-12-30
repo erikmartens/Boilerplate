@@ -1,0 +1,29 @@
+[
+	{
+		"id" :  0,
+		"type" : "hash-sha256",
+		"data" :
+			{
+  				"input" : "woot",
+ 			 	"output" : "wat"
+			}
+	},
+	{
+		"id" :  1,
+		"type" : "hash-md5",
+		"data" :
+			{
+  				"input" : "bar",
+ 			 	"output" : "foo"
+			}
+	},
+	{
+		"id" :  2,
+		"type" : "crack-md5",
+		"data" :
+			{
+  				"input" : "fizz",
+ 			 	"output" : "buzz"
+			}
+	}
+]
