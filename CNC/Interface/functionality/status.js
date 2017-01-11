@@ -9,7 +9,7 @@ setInterval(function() {
 function getData(target, sortField, handleData) {
     var xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'http://botnet.artificial.engineering:80/api/' + target);
+    xhr.open('GET', 'http://localhost:3000/api/' + target);
     xhr.responseType = 'json';
     xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -49,7 +49,7 @@ function postData(id, setting) {
     };
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://botnet.artificial.engineering/api/Status', true);
+    xhr.open('POST', 'http://localhost:3000/api/Status', true);
 
     xhr.responseType = 'json';
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');

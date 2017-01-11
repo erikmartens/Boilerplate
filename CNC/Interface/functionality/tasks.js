@@ -11,7 +11,7 @@ function postTasksData() {
     };
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://botnet.artificial.engineering/api/Tasks', true);
+    xhr.open('POST', 'http://localhost:3000/api/Tasks', true);
 
     xhr.responseType = 'json';
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
