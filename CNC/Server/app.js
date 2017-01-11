@@ -48,7 +48,8 @@ app.get('/api/Status/:id', (req, res) => {
             res.send(JSON.stringify(id));
         } 
         else {
-            res.send(JSON.stringify('BAD REQUEST: Item with specified ID not present'));
+            res.status(404);
+            res.json( { code: 404, message: 'BAD REQUEST: Item with specified ID not present' } );
         }
     }
 });
@@ -69,7 +70,8 @@ app.get('/api/Tasks/:id', (req, res) => {
             res.send(JSON.stringify(id));
         } 
         else {
-            res.send(JSON.stringify('BAD REQUEST: Item with specified ID not present'));
+            res.status(404);
+            res.json( { code: 404, message: 'BAD REQUEST: Item with specified ID not present'} );
         }
     }
 });
@@ -102,22 +104,30 @@ app.post('/api/Status', (req, res) => {
 
             //Save changes to file system
             fs.writeFile('./status_cache.json', JSON.stringify(statusEntries), (error) => {
-            	if(error) throw error;
+            	if(error) {
+                    res.status(500);
+                    res.json( { code: 500, message: 'INTERNAL ERROR: An error occured on the server'} )
+                    throw error;
+                }
             });
 
-            res.send(JSON.stringify({ message: 'SUCCESS: Request was completed'}));
+            res.status(200);
+            res.json({ code: 200, message: 'SUCCESS: Request was completed'});
         } 
         else {
-            res.send(JSON.stringify({ message: 'BAD REQUEST: No status information passed to server' }));
+            res.status(400);
+            res.json( { code: 400, message: 'BAD REQUEST: No status information passed to server'} );
         }
     } 
     //No ID was passed
     else if(req.body.id === undefined) {
-    	res.send(JSON.stringify({ message: 'BAD REQUEST: No ID was passed with the request' }));
+        res.status(400);
+    	res.json({ code: 400, message: 'BAD REQUEST: No ID was passed with the request' });
     }
     //Wrong ID was passed
     else {
-        res.send(JSON.stringify({ message: 'BAD REQUEST: Item with specified ID does not exist' }));
+        res.status(404);
+        res.json( { code: 404, message: 'BAD REQUEST: Item with specified ID does not exist' });
     }
 });
 
@@ -130,10 +140,12 @@ app.post('/api/Tasks', (req, res) => {
 	
 	//POST request must include allowed type, otherwise nothing can be updated or added
     if(req.body.type === undefined) {
-        res.send(JSON.stringify({ message: 'BAD REQUEST: Missing type information in request' }));
+        res.status(400);
+        res.json({ message: 'BAD REQUEST: Missing type information in request' });
     } 
     else if(req.body.type !== undefined && !isAllowedType ) {
-        res.send(JSON.stringify({ message: 'BAD REQUEST: Udefined type information passed' }));
+        res.status(400);
+        res.json( { code: 400, message: 'BAD REQUEST: Udefined type information passed' } );
     }
     else {
         //POST request can modify a task or add a new task (latter case requires passing no ID)
@@ -144,21 +156,28 @@ app.post('/api/Tasks', (req, res) => {
         //Modify a current entry
         if(targtedItem !== undefined) {  
             tasksEntries[tasksEntries.indexOf(targtedItem)] = req.body;
-            res.send(JSON.stringify({ message: 'SUCCESS: Tasks item was modified successfully' }));
+            res.status(200);
+            res.sjson( { code: 200, message: 'SUCCESS: Tasks item was modified successfully' } );
         }
         //Add a new entry (No ID was passed)
         else if(req.body.id === undefined) {
             tasksEntries.push(req.body);
-            res.send(JSON.stringify({ message: 'SUCCESS: Tasks item was added successfully' }));
+            res.status(200);
+            res.json( { message: 'SUCCESS: Tasks item was added successfully' } );
         }
         //Wrong ID was passed
         else  {
-            res.send(JSON.stringify({ message: 'BAD REQUEST: Item with specified ID does not exist' }));
+            res.status(400);
+            res.json( { message: 'BAD REQUEST: Item with specified ID does not exist' } );
         }
 
         //Save changes to file system
         fs.writeFile('./tasks_cache.json', JSON.stringify(tasksEntries), (error) => {
-            if(error) throw error;
+            if(error) {
+                res.status(500);
+                res.json( { code: 500, message: 'INTERNAL ERROR: An error occured on the server'} )
+                throw error;
+            }
         });
     }
 });
