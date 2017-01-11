@@ -160,7 +160,7 @@ app.post('/api/Tasks', (req, res) => {
 				return item.id === req.body.id;
 			});
 
-			let template = Object.assign({id: -1, type: '', data: {input: ''}}, req.body);
+			let template = Object.assign({ id: -1, type: '', data: { input: '' } }, req.body);
 			let task = JSON.parse(JSON.stringify(template));
 
 			//Modify a current entry
