@@ -12,6 +12,7 @@ function getData(target, sortField, handleData) {
     xhr.open('GET', 'http://localhost:3000/api/' + target);
     xhr.responseType = 'json';
     xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Token', '00530061006C00740079');
 
     xhr.onload = () => {
         let data = xhr.response;
@@ -20,8 +21,7 @@ function getData(target, sortField, handleData) {
 
         //Sorting standard values
         if(sortField == "ip") {
-        	data.sort(function(a, b) 
-			{ 
+        	data.sort((a, b) => { 
 				var aIP = parseIP(a[sortField]);
 				var bIP = parseIP(b[sortField]);
 
@@ -30,12 +30,13 @@ function getData(target, sortField, handleData) {
 		}
 		//Use a special sort function while sorting IPs
 		else {
-			data.sort(function(a, b) { 
+			data.sort((a, b) => { 
                 return a[sortField] - b[sortField]; 
             });			
 		}
-        if(typeof(handleData) === "function")
+        if(typeof(handleData) === "function") {
             handleData(data);
+        }
     };
 
     xhr.send(null);

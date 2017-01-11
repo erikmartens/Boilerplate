@@ -15,6 +15,7 @@ function postTasksData() {
 
     xhr.responseType = 'json';
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xhr.setRequestHeader('Token', '00530061006C00740079');
 
     xhr.send(JSON.stringify(data));
 }
@@ -32,4 +33,3 @@ function refreshOnButtonPress() {
 $(document).ready(function() {
     refreshOnButtonPress();
 });
-

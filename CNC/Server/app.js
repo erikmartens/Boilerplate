@@ -11,6 +11,8 @@ let statusEntries = [];
 let tasksEntries = [];
 let tasksTypes = [ "hash-md5", "hash-sha256", "crack-md5" ];
 
+let teamToken = '00530061006C00740079';
+
 
 //MARK: - Setup
 app.use(cors());
@@ -47,7 +49,7 @@ app.get('/api/Status/:id', (req, res) => {
 
 		if (requestedItem !== undefined) {
 			res.send(JSON.stringify(requestedItem));
-		}		else {
+		} else {
 			res.status(404);
 			res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID not present' });
 		}
@@ -69,7 +71,7 @@ app.get('/api/Tasks/:id', (req, res) => {
 
 		if (requestedItem !== undefined) {
 			res.send(JSON.stringify(requestedItem));
-		}		else {
+		} else {
 			res.status(404);
 			res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID not present' });
 		}
@@ -82,92 +84,112 @@ app.get('/api/Tasks/:id', (req, res) => {
 /* request for STATUS */
 
 app.post('/api/Status', (req, res) => {
-
-	let targetedItem = statusEntries.find((item) => {
-		return item.id === req.body.id;
-	});
+	if (teamToken === req.get('Token')) {
+		let targetedItem = statusEntries.find((item) => {
+			return item.id === req.body.id;
+		});
 
     //Correct ID was passed
-	if (targetedItem !== null) {
+		if (targetedItem !== null) {
 		//POST request must include status information, otherwise nothing can be updated
-		if (req.body.status !== null) {
+			if (req.body.status !== null) {
 
-			if (req.body.status === true) {
+				if (req.body.status === true) {
 				//Start task
-				targetedItem.workload = 1.0;
-				targetedItem.task = 0;
-			}			else {
+					targetedItem.workload = 1.0;
+					targetedItem.task = 0;
+				} else {
 				//Cease task
-				targetedItem.workload = 0.0;
-				targetedItem.task = 1;
-			}
+					targetedItem.workload = 0.0;
+					targetedItem.task = 1;
+				}
 
             //Save changes to file system
-			fs.writeFile('./status_cache.json', JSON.stringify(statusEntries), (error) => {
-				if (error) {
-					res.status(500);
-					res.json({ code: 500, message: 'INTERNAL ERROR: An error occured on the server' });
-					throw error;
-				}
-			});
+				fs.writeFile('./status_cache.json', JSON.stringify(statusEntries), (error) => {
+					if (error) {
+						res.status(500);
+						res.json({ code: 500, message: 'INTERNAL ERROR: An error occured on the server' });
+						throw error;
+					}
+				});
 
-			res.status(200);
-			res.json({ code: 200, message: 'SUCCESS: Request was completed' });
-		}		else {
+				res.status(200);
+				res.json({ code: 200, message: 'SUCCESS: Request was completed' });
+			} else {
+				res.status(400);
+				res.json({ code: 400, message: 'BAD REQUEST: No status information passed to server' });
+			}
+		} else if (req.body.id === undefined) { //No ID was passed
 			res.status(400);
-			res.json({ code: 400, message: 'BAD REQUEST: No status information passed to server' });
+			res.json({ code: 400, message: 'BAD REQUEST: No ID was passed with the request' });
+		} else { //Wrong ID was passed
+			res.status(404);
+			res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID does not exist' });
 		}
-	}    	else if (req.body.id === undefined) { //No ID was passed
-		res.status(400);
-		res.json({ code: 400, message: 'BAD REQUEST: No ID was passed with the request' });
-	}    	else { //Wrong ID was passed
+	} else {
 		res.status(404);
-		res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID does not exist' });
+		res.json({ code: 404, message: 'BAD REQUEST: Token does not check out' });
 	}
 });
 
 /* request for TASKS */
 
 app.post('/api/Tasks', (req, res) => {
+	if (teamToken === req.get('Token')) {
+		let isAllowedType = tasksTypes.includes(req.body.type);
 
-	let isAllowedType = tasksTypes.contains((item) => {
-		return item.type === req.body.type;
-	});
-
-	//POST request must include allowed type, otherwise nothing can be updated or added
-	if (req.body.type === undefined) {
-		res.status(400);
-		res.json({ code: 400, message: 'BAD REQUEST: Missing type information in request' });
-	}	else if (req.body.type !== undefined && !isAllowedType) {
-		res.status(400);
-		res.json({ code: 400, message: 'BAD REQUEST: Udefined type information passed' });
-	}	else {
-        //POST request can modify a task or add a new task (latter case requires passing no ID)
-		let targtedItem = tasksEntries.find((item) => {
-			return item.id === req.body.id;
+		//Sort tasks
+		tasksEntries.sort((a, b) => {
+			if (a.id < b.id) return -1;
+			if (a.id > b.id) return  1;
+			return 0;
 		});
 
-        //Modify a current entry
-		if (targtedItem !== undefined) {
-			tasksEntries[tasksEntries.indexOf(targtedItem)] = req.body;
-			res.status(200);
-			res.sjson({ code: 200, message: 'SUCCESS: Tasks item was modified successfully' });
-		}        		else if (req.body.id === undefined) { //Add a new entry (No ID was passed)
-			tasksEntries.push(req.body);
-			res.status(200);
-			res.json({ code: 200, message: 'SUCCESS: Tasks item was added successfully' });
-		}        		else  { //Wrong ID was passed
+		let next_id = tasksEntries[tasksEntries.length - 1].id + 1;
+
+		//POST request must include allowed type, otherwise nothing can be updated or added
+		if (req.body.type === undefined) {
 			res.status(400);
-			res.json({ code: 400, message: 'BAD REQUEST: Item with specified ID does not exist' });
-		}
+			res.json({ code: 400, message: 'BAD REQUEST: Missing type information in request' });
+		} else if (req.body.type !== undefined && !isAllowedType) {
+			res.status(400);
+			res.json({ code: 400, message: 'BAD REQUEST: Undefined type information passed' });
+		} else {
+			//POST request can modify a task or add a new task (latter case requires passing no ID)
+			let targtedItem = tasksEntries.find((item) => {
+				return item.id === req.body.id;
+			});
 
-        //Save changes to file system
-		fs.writeFile('./tasks_cache.json', JSON.stringify(tasksEntries), (error) => {
-			if (error) {
-				res.status(500);
-				res.json({ code: 500, message: 'INTERNAL ERROR: An error occured on the server' });
-				throw error;
+			let template = Object.assign({id: -1, type: '', data: {input: ''}}, req.body);
+			let task = JSON.parse(JSON.stringify(template));
+
+			//Modify a current entry
+			if (targtedItem !== undefined) {
+				tasksEntries[tasksEntries.indexOf(targtedItem)] = task;
+				res.status(200);
+				res.json({ code: 200, message: 'SUCCESS: Tasks item was modified successfully' });
+			} else if (req.body.id === undefined) { //Add a new entry (No ID was passed)
+				task.id = next_id;
+				tasksEntries.push(task);
+
+				res.status(200);
+				res.json({ code: 200, message: 'SUCCESS: Tasks item was added successfully' });
+			} else  { //Wrong ID was passed
+				res.status(400);
+				res.json({ code: 400, message: 'BAD REQUEST: Item with specified ID does not exist' });
 			}
-		});
+
+			//Save changes to file system
+			fs.writeFile('./tasks_cache.json', JSON.stringify(tasksEntries), (error) => {
+				if (error) {
+					res.status(500);
+					res.json({ code: 500, message: 'INTERNAL ERROR: An error occured on the server' });
+					throw error;
+				}
+			});
+		}
+	} else {
+		res.status(404);
+		res.json({ code: 404, message: 'BAD REQUEST: Token does not check out' });
 	}
 });
