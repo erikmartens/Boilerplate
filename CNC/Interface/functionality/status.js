@@ -2,7 +2,7 @@
  * Created by tuxlin on 28/10/16.
  */
 
-setInterval(function() {
+setInterval(() => {
 	refresh();
 }, 10000);
 

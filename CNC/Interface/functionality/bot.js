@@ -39,7 +39,9 @@ let start_stop_onButtonPress = function() {
 			decrypt(item);
 			refresh();
 		});
-	}
+	} else {
+        //implement stopping
+    }
 };
 
 let decrypt = function(item) {
