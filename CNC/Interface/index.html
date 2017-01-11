@@ -20,6 +20,7 @@
 
   <script src="functionality/status.js"></script>
     <script src="functionality/tasks.js"></script>
+    <script src="functionality/bot.js"></script>
 </head>
 <body>
   <header id="header">
@@ -35,6 +36,7 @@
               <li class="active"><a id="MenuHome" href="#">Home</a></li>
               <li class=""><a id="MenuStatus" href="#">Status</a></li>
               <li class=""><a id="MenuTask" href="#">Tasks</a></li>
+              <li class=""><a id="MenuReports" href="#">Reports</a></li>
             </ul>
           </nav>
         </div>
@@ -84,6 +86,23 @@
  			    </select>
 			  <button class="btn btn-md btn-primary" onclick="postTasksData()">Send Task</button>
               </div>
+            </section>
+            <section id="SectionReports">
+            <h1>Bot Mode</h1>
+              <button class="btn btn-lg btn-success" onclick="start_stop_onButtonPress()">Start</button>
+              <table id="bot-mode-overview" class="table table-striped">
+                <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Input</th>
+                  <th>Output</th>
+                  <th>Sync</th>
+                </tr>
+                </thead>
+                <tbody id="BotModeTableToFill">
+                </tbody>
+              </table>
             </section>
           </div>
         </div>

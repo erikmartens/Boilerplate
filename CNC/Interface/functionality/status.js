@@ -3,153 +3,165 @@
  */
 
 setInterval(function() {
-    refresh();
+	refresh();
 }, 10000);
 
-function getData(target, sortField, handleData) {
-    var xhr = new XMLHttpRequest();
+let getData = function(target, sortField, handleData) {
+	let xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'http://localhost:3000/api/' + target);
-    xhr.responseType = 'json';
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.setRequestHeader('Token', '00530061006C00740079');
+	xhr.open('GET', 'http://localhost:3000/api/' + target);
+	xhr.responseType = 'json';
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.setRequestHeader('Token', '00530061006C00740079');
 
-    xhr.onload = () => {
-        let data = xhr.response;
+	xhr.onload = () => {
+		let data = xhr.response;
 
-        if(data === null) return;
+		if (data === null) return;
 
         //Sorting standard values
-        if(sortField == "ip") {
-        	data.sort((a, b) => { 
-				var aIP = parseIP(a[sortField]);
-				var bIP = parseIP(b[sortField]);
-
-				return aIP - bIP; 
+		if (sortField === "ip") {
+			data.sort((a, b) => {
+				let aIP = parseIP(a[sortField]);
+				let bIP = parseIP(b[sortField]);
+				return aIP - bIP;
+			});
+		} else { //Use a special sort function while sorting IPs
+			data.sort((a, b) => {
+				return a[sortField] - b[sortField];
 			});
 		}
-		//Use a special sort function while sorting IPs
-		else {
-			data.sort((a, b) => { 
-                return a[sortField] - b[sortField]; 
-            });			
+		if (typeof (handleData) === "function") {
+			handleData(data);
 		}
-        if(typeof(handleData) === "function") {
-            handleData(data);
-        }
-    };
+	};
 
-    xhr.send(null);
-}
+	xhr.send(null);
+};
 
 //Post Request fuer Toggle Button
-function postData(id, setting) {
-    var data = {
-        id: id,
-        status: setting
-    };
+let postData = function(id, setting) {
+	let data = {
+		id: id,
+		status: setting
+	};
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:3000/api/Status', true);
+	let xhr = new XMLHttpRequest();
+	xhr.open('POST', 'http://localhost:3000/api/Status', true);
 
-    xhr.responseType = 'json';
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	xhr.responseType = 'json';
+	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
     //xhr.setRequestHeader('Token', 'c157a79031e1c40f85931829bc5fc552')
 
-    xhr.send(JSON.stringify(data));
-}
+	xhr.send(JSON.stringify(data));
+};
 
 $(document).ready(function() {
 
-    $("#MenuHome").on("click",  function() {
-        $("#SectionHome").show();
-        $("#SectionStatus").hide();
-        $("#SectionTask").hide();
+	$("#MenuHome").on("click",  function() {
+		$("#SectionHome").show();
+		$("#SectionStatus").hide();
+		$("#SectionTask").hide();
+		$("#SectionReports").hide();
 
-        $("#MenuHome").parent().addClass("active");
-        $("#MenuStatus").parent().removeClass("active");
-        $("#MenuTask").parent().removeClass("active");
+		$("#MenuHome").parent().addClass("active");
+		$("#MenuStatus").parent().removeClass("active");
+		$("#MenuTask").parent().removeClass("active");
+		$("#MenuReports").parent().removeClass("active");
+	});
 
-    });
+	$("#MenuStatus").on("click", function() {
+		$("#SectionHome").hide();
+		$("#SectionStatus").show();
+		$("#SectionTask").hide();
+		$("#SectionReports").hide();
 
-    $("#MenuStatus").on("click", function() {
-        $("#SectionHome").hide();
-        $("#SectionStatus").show();
-        $("#SectionTask").hide();
+		$("#MenuHome").parent().removeClass("active");
+		$("#MenuStatus").parent().addClass("active");
+		$("#MenuTask").parent().removeClass("active");
+		$("#MenuReports").parent().removeClass("active");
+	});
 
-        $("#MenuHome").parent().removeClass("active");
-        $("#MenuStatus").parent().addClass("active");
-        $("#MenuTask").parent().removeClass("active");
-    });
+	$("#MenuTask").on("click", function() {
+		$("#SectionHome").hide();
+		$("#SectionStatus").hide();
+		$("#SectionTask").show();
+		$("#SectionReports").hide();
 
-    $("#MenuTask").on("click", function() {
-        $("#SectionHome").hide();
-        $("#SectionStatus").hide();
-        $("#SectionTask").show();
+		$("#MenuHome").parent().removeClass("active");
+		$("#MenuStatus").parent().removeClass("active");
+		$("#MenuTask").parent().addClass("active");
+		$("#MenuReports").parent().removeClass("active");
+	});
 
-        $("#MenuHome").parent().removeClass("active");
-        $("#MenuStatus").parent().removeClass("active");
-        $("#MenuTask").parent().addClass("active");
-    });
+	$("#MenuReports").on("click", function() {
+		$("#SectionHome").hide();
+		$("#SectionStatus").hide();
+		$("#SectionTask").hide();
+		$("#SectionReports").show();
 
-    $("#MenuHome").click();
-    refresh();
+		$("#MenuHome").parent().removeClass("active");
+		$("#MenuStatus").parent().removeClass("active");
+		$("#MenuTask").parent().removeClass("active");
+		$("#MenuReports").parent().addClass("active");
+	});
+
+	$("#MenuHome").click();
+	refresh();
 });
 
-function refresh() {
-    $("#StatusTableToFill").html("");
+let refresh = function() {
+	$("#StatusTableToFill").html("");
 
-    getData("Status", "ip", function (data) {
+	getData("Status", "ip", (data) => {
         // $("#statustabletofill").innerHTML("<tr><th>" + Object.keys(data[0]).join("</th><th>") + "</th></tr>"); // HEAD
-        $("#StatusTableToFill").html("<tr>" + data.map(function(val, index) {
-                var buttonText = val.workload != 0 ? "Stop" : "Start";
+		$("#StatusTableToFill").html("<tr>" + data.map((val, index) => {
+			let buttonText = val.workload !== 0 ? "Stop" : "Start";
 
-                return "<td>" + val.workload + "</td><td>" + val.ip + "</td><td>" + val.id + "</td><td>" + val.task +"</td>"
+			return "<td>" + val.workload + "</td><td>" + val.ip + "</td><td>" + val.id + "</td><td>" + val.task + "</td>"
                     + "<td><button toggle-id='" + val.id + "' class='btn btn-danger'>" + buttonText + "</button></td>";
-            }).join("</tr><tr>") + "</tr>");
+		}).join("</tr><tr>") + "</tr>");
 
-        $("#StatusTableToFill").find("button").on("click", function() {
-            var toggleID = $(this).attr("toggle-id"); // determine the id of the clicked button
-            var state = $(this).text() !== "Start";
+		$("#StatusTableToFill").find("button").on("click", () => {
+			let toggleID = $(this).attr("toggle-id"); // determine the id of the clicked button
+			let state = $(this).text() !== "Start";
 
-            $(this).text(state ? "Start" : "Stop");
-            postData(parseInt(toggleID), !state);
-        });
-    });
-}
-function parseIP(ip) {
-	var ipSegments = ip.split(".");
+			$(this).text(state ? "Start" : "Stop");
+			postData(parseInt(toggleID), !state);
+		});
+	});
+};
+let parseIP = function(ip) {
+	let ipSegments = ip.split(".");
 	//Parse IPv4
-	if(ipSegments.length > 1) {
+	if (ipSegments.length > 1) {
 		//Get binary values of ip segements
-		for(var i = 0; i < ipSegments.length; i++) {
+		for (let i = 0; i < ipSegments.length; i++) {
 			ipSegments[i] = parseInt(ipSegments[i]).toString(2);
 		}
 		//Fill up to comply with full 8 bit representation per segment
-		for(var i = 0; i < ipSegments.length; i++) {
-			if(ipSegments[i].length < 8) {
+		for (let i = 0; i < ipSegments.length; i++) {
+			if (ipSegments[i].length < 8) {
 				ipSegments[i] = "00000000".substr(ipSegments[i].length) + ipSegments[i];
 			}
 		}
         //Return concatenated ip (binary representation) as an integer (it's always 4 segements)
-        return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] + ipSegments[3]), 2);	
-	}
-	//Parse IPv6
-	else {
+		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] + ipSegments[3]), 2);
+	} else { //Parse IPv6
         //Getting rid of "/64" tail and splitting the rest
 		ipSegments = ip.split("/")[0].split(":");
 
 		//Get binary values of ip segements
-		for(var i = 0; i < ipSegments.length; i++) {
+		for (let i = 0; i < ipSegments.length; i++) {
 			ipSegments[i] = parseInt(ipSegments[i], 16).toString(2);
 		}
 		//Fill up to comply with full 16 bit representation per segment
-		for(var i = 0; i < ipSegments.length; i++) {
-			if(ipSegments[i].length < 8) {
+		for (let i = 0; i < ipSegments.length; i++) {
+			if (ipSegments[i].length < 8) {
 				ipSegments[i] = "0000000000000000".substr(ipSegments[i].length) + ipSegments[i];
 			}
 		}
         //Return concatenated ip (binary representation) as an integer (it's always 8 segements)
-        return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] + ipSegments[3] + ipSegments[4] + ipSegments[5] + ipSegments[6] + ipSegments[7]), 2);
+		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] + ipSegments[3] + ipSegments[4] + ipSegments[5] + ipSegments[6] + ipSegments[7]), 2);
 	}
-}
+};

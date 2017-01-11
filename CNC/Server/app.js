@@ -9,7 +9,7 @@ const fs = require('fs');
 
 let statusEntries = [];
 let tasksEntries = [];
-let tasksTypes = [ "hash-md5", "hash-sha256", "crack-md5" ];
+let tasksTypes = [ 'hash-md5', 'hash-sha256', 'crack-md5' ];
 
 let teamToken = '00530061006C00740079';
 
@@ -191,5 +191,33 @@ app.post('/api/Tasks', (req, res) => {
 	} else {
 		res.status(404);
 		res.json({ code: 404, message: 'BAD REQUEST: Token does not check out' });
+	}
+});
+
+
+/* request for REPORT */
+
+app.post('/api/Reports', (req, res) => {
+	if (tasksEntries instanceof Array) {
+		let requestedItem = tasksEntries.find((item) => {
+			return item.id === req.params.id;
+		});
+
+		if (requestedItem !== undefined) {
+			if(requestedItem.body.data.output === undefined) {
+				let template = Object.assign({ id: -1, type: '', data: { input: '', output: '' } }, req.body);
+				let task = JSON.parse(JSON.stringify(template));
+				tasksEntries[tasksEntries.indexOf(targtedItem)] = task;
+
+				res.status(200);
+				res.json({ code: 200, message: 'OK: Item with specified ID was updated' });
+			} else {
+				res.status(304);
+				res.json({ code: 304, message: 'NOT MODIFIED: Item was already updated previously' });
+			}
+		} else {
+			res.status(404);
+			res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID not present' });
+		}
 	}
 });
