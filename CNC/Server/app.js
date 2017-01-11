@@ -141,7 +141,7 @@ app.post('/api/Tasks', (req, res) => {
 	//POST request must include allowed type, otherwise nothing can be updated or added
     if(req.body.type === undefined) {
         res.status(400);
-        res.json({ message: 'BAD REQUEST: Missing type information in request' });
+        res.json({ code: 400, message: 'BAD REQUEST: Missing type information in request' });
     } 
     else if(req.body.type !== undefined && !isAllowedType ) {
         res.status(400);
@@ -163,12 +163,12 @@ app.post('/api/Tasks', (req, res) => {
         else if(req.body.id === undefined) {
             tasksEntries.push(req.body);
             res.status(200);
-            res.json( { message: 'SUCCESS: Tasks item was added successfully' } );
+            res.json( { code: 200, message: 'SUCCESS: Tasks item was added successfully' } );
         }
         //Wrong ID was passed
         else  {
             res.status(400);
-            res.json( { message: 'BAD REQUEST: Item with specified ID does not exist' } );
+            res.json( { code: 400, message: 'BAD REQUEST: Item with specified ID does not exist' } );
         }
 
         //Save changes to file system
