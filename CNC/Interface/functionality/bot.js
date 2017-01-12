@@ -5,7 +5,7 @@ let completedTasks = [];
 
 let tasksTypes = [ 'hash-md5', 'hash-sha256' ];
 
-let postTasksData = function(data) {
+let postEncryptedTasksData = (data) => {
 	let xhr = new XMLHttpRequest();
 	xhr.open('POST', 'http://localhost:3000/api/Reports', true);
 
@@ -20,7 +20,7 @@ let postTasksData = function(data) {
 	};
 };
 
-let start_stop_onButtonPress = function() {
+let start_stop_onButtonPress = () => {
 	let state = $(this).text() !== 'Start';
 	$(this).text(state ? 'Start' : 'Stop');
 
@@ -36,15 +36,15 @@ let start_stop_onButtonPress = function() {
 		});
 
 		tasks.forEach((item) => {
-			decrypt(item);
-			refresh();
+			encrypt(item);
+			refreshReports();
 		});
 	} else {
         //implement stopping
     }
 };
 
-let decrypt = function(item) {
+let encrypt = (item) => {
 
 	let isAllowedType = tasksTypes.includes(item.body.type);
 
@@ -71,7 +71,7 @@ let decrypt = function(item) {
 			}
 		}
 
-		let responseStatus = postTasksData(completedTask);
+		let responseStatus = postEncryptedTasksData(completedTask);
 
 		if (responseStatus === 200) {
 			completedTask.sync = 'OK';
@@ -83,7 +83,7 @@ let decrypt = function(item) {
 	}
 };
 
-let refresh = function() {
+let refreshReports = () => {
 	$("#BotModeTableToFill").html("");
 
 	$("#BotModeTableToFill").html("<tr>" + completedTasks.map((val, index) => {
@@ -92,5 +92,5 @@ let refresh = function() {
 };
 
 $(document).ready(() => {
-	start_stop_onButtonPress();
+	refresh();
 });

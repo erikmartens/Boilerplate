@@ -65,11 +65,11 @@ app.get('/api/Tasks', (req, res) => {
 });
 app.get('/api/Tasks/:id', (req, res) => {
 	if (tasksEntries instanceof Array) {
-		let requestedItem = tasksEntries.find((item) => {
+		let targetedItem = tasksEntries.find((item) => {
 			return item.id === req.params.id;
 		});
 
-		if (requestedItem !== undefined) {
+		if (targetedItem !== undefined) {
 			res.send(JSON.stringify(requestedItem));
 		} else {
 			res.status(404);
@@ -90,17 +90,17 @@ app.post('/api/Status', (req, res) => {
 		});
 
     //Correct ID was passed
-		if (targetedItem !== null) {
+		if (targetedItem !== undefined) {
 		//POST request must include status information, otherwise nothing can be updated
 			if (req.body.status !== null) {
 
 				if (req.body.status === true) {
 				//Start task
-					targetedItem.workload = 1.0;
+					targetedItem.workload = 1;
 					targetedItem.task = 0;
 				} else {
 				//Cease task
-					targetedItem.workload = 0.0;
+					targetedItem.workload = 0;
 					targetedItem.task = 1;
 				}
 
@@ -127,8 +127,8 @@ app.post('/api/Status', (req, res) => {
 			res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID does not exist' });
 		}
 	} else {
-		res.status(404);
-		res.json({ code: 404, message: 'BAD REQUEST: Token does not check out' });
+		res.status(400);
+		res.json({ code: 400, message: 'BAD REQUEST: Token does not check out' });
 	}
 });
 
@@ -194,13 +194,12 @@ app.post('/api/Tasks', (req, res) => {
 	}
 });
 
-
 /* request for REPORT */
 
 app.post('/api/Reports', (req, res) => {
 	if (tasksEntries instanceof Array) {
 		let requestedItem = tasksEntries.find((item) => {
-			return item.id === req.params.id;
+			return item.id === req.body.id;
 		});
 
 		if (requestedItem !== undefined) {

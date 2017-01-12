@@ -6,7 +6,7 @@ setInterval(() => {
 	refresh();
 }, 10000);
 
-let getData = function(target, sortField, handleData) {
+let getData = (target, sortField, handleData) => {
 	let xhr = new XMLHttpRequest();
 
 	xhr.open('GET', 'http://localhost:3000/api/' + target);
@@ -40,7 +40,7 @@ let getData = function(target, sortField, handleData) {
 };
 
 //Post Request fuer Toggle Button
-let postData = function(id, setting) {
+let postData = (id, setting) => {
 	let data = {
 		id: id,
 		status: setting
@@ -51,14 +51,14 @@ let postData = function(id, setting) {
 
 	xhr.responseType = 'json';
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    //xhr.setRequestHeader('Token', 'c157a79031e1c40f85931829bc5fc552')
+    xhr.setRequestHeader('Token', '00530061006C00740079');
 
 	xhr.send(JSON.stringify(data));
 };
 
-$(document).ready(function() {
+$(document).ready(() => {
 
-	$("#MenuHome").on("click",  function() {
+	$("#MenuHome").on("click",  () => {
 		$("#SectionHome").show();
 		$("#SectionStatus").hide();
 		$("#SectionTask").hide();
@@ -70,7 +70,7 @@ $(document).ready(function() {
 		$("#MenuReports").parent().removeClass("active");
 	});
 
-	$("#MenuStatus").on("click", function() {
+	$("#MenuStatus").on("click", () => {
 		$("#SectionHome").hide();
 		$("#SectionStatus").show();
 		$("#SectionTask").hide();
@@ -82,7 +82,7 @@ $(document).ready(function() {
 		$("#MenuReports").parent().removeClass("active");
 	});
 
-	$("#MenuTask").on("click", function() {
+	$("#MenuTask").on("click", () => {
 		$("#SectionHome").hide();
 		$("#SectionStatus").hide();
 		$("#SectionTask").show();
@@ -94,7 +94,7 @@ $(document).ready(function() {
 		$("#MenuReports").parent().removeClass("active");
 	});
 
-	$("#MenuReports").on("click", function() {
+	$("#MenuReports").on("click", () => {
 		$("#SectionHome").hide();
 		$("#SectionStatus").hide();
 		$("#SectionTask").hide();
@@ -110,7 +110,7 @@ $(document).ready(function() {
 	refresh();
 });
 
-let refresh = function() {
+let refresh = () => {
 	$("#StatusTableToFill").html("");
 
 	getData("Status", "ip", (data) => {
@@ -118,20 +118,22 @@ let refresh = function() {
 		$("#StatusTableToFill").html("<tr>" + data.map((val, index) => {
 			let buttonText = val.workload !== 0 ? "Stop" : "Start";
 
-			return "<td>" + val.workload + "</td><td>" + val.ip + "</td><td>" + val.id + "</td><td>" + val.task + "</td>"
-                    + "<td><button toggle-id='" + val.id + "' class='btn btn-danger'>" + buttonText + "</button></td>";
+			return "<td>" + val.task + "</td><td>" + val.ip + "</td><td>" + val.id + "</td><td>" + val.workload + "</td>"
+                    + "<td><button id='toggleButton' toggle-id='" + val.id + "' class='btn btn-danger'>" + buttonText + "</button></td>";
 		}).join("</tr><tr>") + "</tr>");
 
-		$("#StatusTableToFill").find("button").on("click", () => {
-			let toggleID = $(this).attr("toggle-id"); // determine the id of the clicked button
-			let state = $(this).text() !== "Start";
+		$("#StatusTableToFill").find("#toggleButton").on("click", () => {
+            let button = $("#StatusTableToFill").find("#toggleButton");
 
-			$(this).text(state ? "Start" : "Stop");
+			let toggleID = button.attr("toggle-id"); // determine the id of the clicked button
+			let state = button.text() !== "Start";
+
+			button.text(state ? "Start" : "Stop");
 			postData(parseInt(toggleID), !state);
 		});
 	});
 };
-let parseIP = function(ip) {
+let parseIP = (ip) => {
 	let ipSegments = ip.split(".");
 	//Parse IPv4
 	if (ipSegments.length > 1) {

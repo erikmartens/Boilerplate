@@ -2,7 +2,7 @@
  * Created by tuxlin on 15/11/16.
  */
 
-let postTasksData = function() {
+let postTasksData = () => {
 	let data = {
 		type: document.getElementById("optionSelect").value,
 		data: {
@@ -20,7 +20,7 @@ let postTasksData = function() {
 	xhr.send(JSON.stringify(data));
 };
 
-let refreshOnButtonPress = function() {
+let refreshOnButtonPress = () => {
 	$("#TasksTableToFill").html("");
 
 	getData("Tasks", "id", (data) => {
