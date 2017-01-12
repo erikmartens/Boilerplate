@@ -20,7 +20,7 @@
 
   <script src="functionality/status.js"></script>
     <script src="functionality/tasks.js"></script>
-    <script src="functionality/bot.js"></script>
+    <script src="functionality/reports.js"></script>
 </head>
 <body>
   <header id="header">
@@ -89,7 +89,7 @@
             </section>
             <section id="SectionReports">
             <h1>Bot Mode</h1>
-              <button class="btn btn-lg btn-success" onclick="start_stop_onButtonPress">Start</button>
+              <button id= "toggleEncryptButton" class="btn btn-lg btn-success" onclick="start_stop_onButtonPress()">Start</button>
               <table id="bot-mode-overview" class="table table-striped">
                 <thead>
                 <tr>

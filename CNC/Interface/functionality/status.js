@@ -4,9 +4,9 @@
 
 setInterval(() => {
 	refresh();
-}, 10000);
+}, 5000);
 
-let getData = (target, sortField, handleData) => {
+let getData = (target, sortField, callback) => {
 	let xhr = new XMLHttpRequest();
 
 	xhr.open('GET', 'http://localhost:3000/api/' + target);
@@ -31,8 +31,8 @@ let getData = (target, sortField, handleData) => {
 				return a[sortField] - b[sortField];
 			});
 		}
-		if (typeof (handleData) === "function") {
-			handleData(data);
+		if (typeof (callback) === "function") {
+			callback(data);
 		}
 	};
 
@@ -51,7 +51,7 @@ let postData = (id, setting) => {
 
 	xhr.responseType = 'json';
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    xhr.setRequestHeader('Token', '00530061006C00740079');
+	xhr.setRequestHeader('Token', '00530061006C00740079');
 
 	xhr.send(JSON.stringify(data));
 };
@@ -123,7 +123,7 @@ let refresh = () => {
 		}).join("</tr><tr>") + "</tr>");
 
 		$("#StatusTableToFill").find("#toggleButton").on("click", () => {
-            let button = $("#StatusTableToFill").find("#toggleButton");
+			let button = $("#StatusTableToFill").find("#toggleButton");
 
 			let toggleID = button.attr("toggle-id"); // determine the id of the clicked button
 			let state = button.text() !== "Start";

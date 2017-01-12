@@ -70,7 +70,7 @@ app.get('/api/Tasks/:id', (req, res) => {
 		});
 
 		if (targetedItem !== undefined) {
-			res.send(JSON.stringify(requestedItem));
+			res.send(JSON.stringify(targetedItem));
 		} else {
 			res.status(404);
 			res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID not present' });
@@ -198,12 +198,12 @@ app.post('/api/Tasks', (req, res) => {
 
 app.post('/api/Reports', (req, res) => {
 	if (tasksEntries instanceof Array) {
-		let requestedItem = tasksEntries.find((item) => {
+		let targtedItem = tasksEntries.find((item) => {
 			return item.id === req.body.id;
 		});
 
-		if (requestedItem !== undefined) {
-			if(requestedItem.body.data.output === undefined) {
+		if (targtedItem !== undefined) {
+			if (targtedItem.data.output === undefined) {
 				let template = Object.assign({ id: -1, type: '', data: { input: '', output: '' } }, req.body);
 				let task = JSON.parse(JSON.stringify(template));
 				tasksEntries[tasksEntries.indexOf(targtedItem)] = task;
@@ -218,5 +218,14 @@ app.post('/api/Reports', (req, res) => {
 			res.status(404);
 			res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID not present' });
 		}
+
+		//Save changes to file system
+		fs.writeFile('./tasks_cache.json', JSON.stringify(tasksEntries), (error) => {
+			if (error) {
+				res.status(500);
+				res.json({ code: 500, message: 'INTERNAL ERROR: An error occured on the server' });
+				throw error;
+			}
+		});
 	}
 });
