@@ -3,7 +3,7 @@
  */
 
 setInterval(() => {
-	refresh();
+	refreshStatusTableData();
 }, 15000);
 
 let getData = (target, sortField, callback) => {
@@ -113,10 +113,10 @@ $(document).ready(() => {
 	});
 
 	$("#MenuHome").click();
-	refresh();
+	refreshStatusTableData();
 });
 
-let refresh = () => {
+let refreshStatusTableData = () => {
 	$("#StatusTableToFill").html("");
 
 	getData("Status", "ip", (data) => {
@@ -135,7 +135,7 @@ let refresh = () => {
 
                 button.text(state ? "Start" : "Stop");
                 postData(item.id, !state, () => {
-                    refresh();
+                    refreshStatusTableData();
                 });
             });
         })

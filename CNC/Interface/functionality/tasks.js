@@ -20,7 +20,7 @@ let postTasksData = () => {
 	xhr.send(JSON.stringify(data));
 };
 
-let removeTasksData = (id, callback) => {
+let removeTasksEntry = (id, callback) => {
     let data = {
         id: id,
         type: 'hash-md5',
@@ -57,7 +57,7 @@ let refreshTasksTableData = () => {
 
                 let button = $("#TasksTableToFill").find("#" + item.id);
 
-                removeTasksData(item.id, () => {
+                removeTasksEntry(item.id, () => {
                     refreshTasksTableData();
                 });
             });
@@ -65,7 +65,7 @@ let refreshTasksTableData = () => {
 	});
 };
 
-let refreshOnButtonPress = () => {
+let refreshTasks_onButtonPress = () => {
     refreshTasksTableData();
 };
 

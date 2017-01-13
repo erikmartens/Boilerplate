@@ -54,7 +54,7 @@ let start_stop_onButtonPress = () => {
 
 let resetReports_onButtonPress = () => {
 	completedTasks = [];
-	refreshReports();
+	refreshReportsTableData();
 };
 
 let encrypt = (item, index) => {
@@ -90,7 +90,7 @@ let encrypt = (item, index) => {
 			}
 
 			completedTasks.push(completedTask);
-			refreshReports();
+			refreshReportsTableData();
 
 			//After the last item: Tell the user process is done and can be started again
 			if(index === (tasks.length - 1)) {
@@ -100,7 +100,7 @@ let encrypt = (item, index) => {
 	}
 };
 
-let refreshReports = () => {
+let refreshReportsTableData = () => {
 	$("#BotModeTableToFill").html("");
 
 	$("#BotModeTableToFill").html("<tr>" + completedTasks.map((val, index) => {
@@ -109,5 +109,5 @@ let refreshReports = () => {
 };
 
 $(document).ready(() => {
-	//refreshReports();
+	//refreshReportsTableData();
 });
