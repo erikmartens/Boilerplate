@@ -1,8 +1,8 @@
 {
-  "name": "salty_server",
+  "name": "CNC Server",
   "version": "1.0.0",
-  "description": "express server",
-  "main": "app.js",
+  "description": "CNC Server",
+  "main": "cnc_server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

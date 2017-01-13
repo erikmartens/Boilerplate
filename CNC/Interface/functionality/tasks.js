@@ -20,16 +20,55 @@ let postTasksData = () => {
 	xhr.send(JSON.stringify(data));
 };
 
-let refreshOnButtonPress = () => {
+let removeTasksData = (id, callback) => {
+    let data = {
+        id: id,
+        type: 'hash-md5',
+        remove: true
+    };
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', 'http://localhost:3000/api/Tasks', true);
+
+    xhr.responseType = 'json';
+    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xhr.setRequestHeader('Token', '00530061006C00740079');
+
+    xhr.onload = () => {
+        if (typeof (callback) === "function") {
+            callback();
+        }
+    };
+
+    xhr.send(JSON.stringify(data));
+};
+
+let refreshTasksTableData = () => {
 	$("#TasksTableToFill").html("");
 
 	getData("Tasks", "id", (data) => {
 		$("#TasksTableToFill").html("<tr>" + data.map((val, index) => {
-			return "<td>" + val.id + "</td><td>" + val.type + "</td><td>" + val.data.input + "</td><td>" + val.data.output + "</td>";
+			return "<td>" + val.id + "</td><td>" + val.type + "</td><td>" + val.data.input + "</td><td>" + val.data.output + "</td>" + "<td><button id='" + val.id + "' class='btn btn-danger'>Entfernen</button></td>";
 		}).join("</tr><tr>") + "</tr>");
+
+        
+        data.forEach((item) => {
+            $("#TasksTableToFill").find("#" + item.id).on("click", () => {
+
+                let button = $("#TasksTableToFill").find("#" + item.id);
+
+                removeTasksData(item.id, () => {
+                    refreshTasksTableData();
+                });
+            });
+        })
 	});
 };
 
+let refreshOnButtonPress = () => {
+    refreshTasksTableData();
+};
+
 $(document).ready(() => {
-	refreshOnButtonPress();
+	refreshTasksTableData();
 });

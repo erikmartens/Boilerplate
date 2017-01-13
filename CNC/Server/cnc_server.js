@@ -1,6 +1,7 @@
 //MARK: - Import & Assets
+
 const express = require('express');
-const app = express();
+const server = express();
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -11,15 +12,16 @@ let statusEntries = [];
 let tasksEntries = [];
 let tasksTypes = [ 'hash-md5', 'hash-sha256', 'crack-md5' ];
 
-let teamToken = '00530061006C00740079';
+const teamToken = '00530061006C00740079';
 
 
 //MARK: - Setup
-app.use(cors());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
-app.listen(3000, () => {
+server.use(cors());
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.json());
+
+server.listen(3000, () => {
 	fs.readFile('./status_cache.json', (error, data) => {
 		if (error) throw error;
 		statusEntries = JSON.parse(data.toString('utf8'));
@@ -36,12 +38,12 @@ app.listen(3000, () => {
 
 /* request for STATUS */
 
-app.get('/api/Status', (req, res) => {
+server.get('/api/Status', (req, res) => {
 	if (statusEntries instanceof Array) {
 		res.send(JSON.stringify(statusEntries));
 	}
 });
-app.get('/api/Status/:id', (req, res) => {
+server.get('/api/Status/:id', (req, res) => {
 	if (statusEntries instanceof Array) {
 		let requestedItem  = statusEntries.find((item) => {
 			return item.id === req.params.id;
@@ -58,12 +60,12 @@ app.get('/api/Status/:id', (req, res) => {
 
 /* request for TASKS */
 
-app.get('/api/Tasks', (req, res) => {
+server.get('/api/Tasks', (req, res) => {
 	if (tasksEntries instanceof Array) {
 		res.send(JSON.stringify(tasksEntries));
 	}
 });
-app.get('/api/Tasks/:id', (req, res) => {
+server.get('/api/Tasks/:id', (req, res) => {
 	if (tasksEntries instanceof Array) {
 		let targetedItem = tasksEntries.find((item) => {
 			return item.id === req.params.id;
@@ -83,7 +85,7 @@ app.get('/api/Tasks/:id', (req, res) => {
 
 /* request for STATUS */
 
-app.post('/api/Status', (req, res) => {
+server.post('/api/Status', (req, res) => {
 	if (teamToken === req.get('Token')) {
 		let targetedItem = statusEntries.find((item) => {
 			return item.id === req.body.id;
@@ -134,7 +136,7 @@ app.post('/api/Status', (req, res) => {
 
 /* request for TASKS */
 
-app.post('/api/Tasks', (req, res) => {
+server.post('/api/Tasks', (req, res) => {
 	if (teamToken === req.get('Token')) {
 		let isAllowedType = tasksTypes.includes(req.body.type);
 
@@ -163,11 +165,29 @@ app.post('/api/Tasks', (req, res) => {
 			let template = Object.assign({ id: -1, type: '', data: { input: '' } }, req.body);
 			let task = JSON.parse(JSON.stringify(template));
 
-			//Modify a current entry
+			
 			if (targtedItem !== undefined) {
-				tasksEntries[tasksEntries.indexOf(targtedItem)] = task;
-				res.status(200);
-				res.json({ code: 200, message: 'SUCCESS: Tasks item was modified successfully' });
+				console.log(req.body.remove);
+				console.log(req.body.id);
+				if (req.body.remove === true) {
+					console.log('remove');
+					//Remove an entry
+					let index = tasksEntries.indexOf(targtedItem);
+
+					if (index > -1) {
+    					tasksEntries.splice(index, 1);
+					}
+
+					res.status(200);
+					res.json({ code: 200, message: 'SUCCESS: Tasks item was removed successfully' });
+
+				} else { //req.body.remove will be undefined
+					//Modify a current entry
+					tasksEntries[tasksEntries.indexOf(targtedItem)] = task;
+				
+					res.status(200);
+					res.json({ code: 200, message: 'SUCCESS: Tasks item was modified successfully' });
+				}
 			} else if (req.body.id === undefined) { //Add a new entry (No ID was passed)
 				task.id = next_id;
 				tasksEntries.push(task);
@@ -196,7 +216,7 @@ app.post('/api/Tasks', (req, res) => {
 
 /* request for REPORT */
 
-app.post('/api/Reports', (req, res) => {
+server.post('/api/Reports', (req, res) => {
 	if (tasksEntries instanceof Array) {
 		let targtedItem = tasksEntries.find((item) => {
 			return item.id === req.body.id;

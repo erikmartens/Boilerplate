@@ -24,7 +24,6 @@ let postEncryptedTasksData = (data, callback) => {
 
 let start_stop_onButtonPress = () => {
 	let button = $("#SectionReports").find("#toggleEncryptButton");
-
 	let state = button.text() === 'Start';
 	button.text(state ? 'Stop' : 'Start');
 
@@ -35,14 +34,30 @@ let start_stop_onButtonPress = () => {
         //Get new data
 		getData('Tasks', 'id', (data) => {
 			tasks = data;
-			tasks.forEach((item) => {
-				encrypt(item);
-			});
+			
+			let BreakException = {};
+			try {
+				tasks.forEach((item, i) => {
+					//Check whether button state is still true
+					state = button.text() === 'Stop';
+					if(!state) throw BreakException;
+
+					//Encrypt next item, if the user did not stop the process
+					encrypt(item, i);
+				});
+			} catch (e) {
+  				if (e !== BreakException) throw e;
+			}
 		});
 	}
 };
 
-let encrypt = (item) => {
+let resetReports_onButtonPress = () => {
+	completedTasks = [];
+	refreshReports();
+};
+
+let encrypt = (item, index) => {
 	let isAllowedType = tasksTypes.includes(item.type);
 
 	if (isAllowedType) {
@@ -76,6 +91,11 @@ let encrypt = (item) => {
 
 			completedTasks.push(completedTask);
 			refreshReports();
+
+			//After the last item: Tell the user process is done and can be started again
+			if(index === (tasks.length - 1)) {
+				$("#SectionReports").find("#toggleEncryptButton").text('Start');
+			}
 		});
 	}
 };

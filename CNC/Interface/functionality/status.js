@@ -4,7 +4,7 @@
 
 setInterval(() => {
 	refresh();
-}, 5000);
+}, 15000);
 
 let getData = (target, sortField, callback) => {
 	let xhr = new XMLHttpRequest();
@@ -40,7 +40,7 @@ let getData = (target, sortField, callback) => {
 };
 
 //Post Request fuer Toggle Button
-let postData = (id, setting) => {
+let postData = (id, setting, callback) => {
 	let data = {
 		id: id,
 		status: setting
@@ -52,6 +52,12 @@ let postData = (id, setting) => {
 	xhr.responseType = 'json';
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	xhr.setRequestHeader('Token', '00530061006C00740079');
+
+    xhr.onload = () => {
+        if (typeof (callback) === "function") {
+            callback();
+        }
+    };
 
 	xhr.send(JSON.stringify(data));
 };
@@ -114,23 +120,30 @@ let refresh = () => {
 	$("#StatusTableToFill").html("");
 
 	getData("Status", "ip", (data) => {
-        // $("#statustabletofill").innerHTML("<tr><th>" + Object.keys(data[0]).join("</th><th>") + "</th></tr>"); // HEAD
 		$("#StatusTableToFill").html("<tr>" + data.map((val, index) => {
 			let buttonText = val.workload !== 0 ? "Stop" : "Start";
 
 			return "<td>" + val.task + "</td><td>" + val.ip + "</td><td>" + val.id + "</td><td>" + val.workload + "</td>"
-                    + "<td><button id='toggleButton' toggle-id='" + val.id + "' class='btn btn-danger'>" + buttonText + "</button></td>";
+                    + "<td><button id='" + val.id + "' class='btn btn-danger'>" + buttonText + "</button></td>";
 		}).join("</tr><tr>") + "</tr>");
 
-		$("#StatusTableToFill").find("#toggleButton").on("click", () => {
-			let button = $("#StatusTableToFill").find("#toggleButton");
+        data.forEach((item) => {
+            $("#StatusTableToFill").find("#" + item.id).on("click", () => {
+                console.log('pressed');
+                let button = $("#StatusTableToFill").find("#" + item.id);
 
-			let toggleID = button.attr("toggle-id"); // determine the id of the clicked button
-			let state = button.text() !== "Start";
+                let state = button.text() !== "Start";
 
-			button.text(state ? "Start" : "Stop");
-			postData(parseInt(toggleID), !state);
-		});
+                console.log(item.id);
+                console.log(state);
+
+                button.text(state ? "Start" : "Stop");
+                postData(item.id, !state, () => {
+                    refresh();
+                });
+            });
+        })
+		
 	});
 };
 let parseIP = (ip) => {
