@@ -165,7 +165,7 @@ server.post('/api/Tasks', (req, res) => {
 			let template = Object.assign({ id: -1, type: '', data: { input: '' } }, req.body);
 			let task = JSON.parse(JSON.stringify(template));
 
-			
+
 			if (targtedItem !== undefined) {
 				console.log(req.body.remove);
 				console.log(req.body.id);
@@ -175,7 +175,7 @@ server.post('/api/Tasks', (req, res) => {
 					let index = tasksEntries.indexOf(targtedItem);
 
 					if (index > -1) {
-    					tasksEntries.splice(index, 1);
+						tasksEntries.splice(index, 1);
 					}
 
 					res.status(200);
@@ -184,7 +184,7 @@ server.post('/api/Tasks', (req, res) => {
 				} else { //req.body.remove will be undefined
 					//Modify a current entry
 					tasksEntries[tasksEntries.indexOf(targtedItem)] = task;
-				
+
 					res.status(200);
 					res.json({ code: 200, message: 'SUCCESS: Tasks item was modified successfully' });
 				}

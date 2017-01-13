@@ -34,19 +34,19 @@ let start_stop_onButtonPress = () => {
         //Get new data
 		getData('Tasks', 'id', (data) => {
 			tasks = data;
-			
+
 			let BreakException = {};
 			try {
 				tasks.forEach((item, i) => {
 					//Check whether button state is still true
 					state = button.text() === 'Stop';
-					if(!state) throw BreakException;
+					if (!state) throw BreakException;
 
 					//Encrypt next item, if the user did not stop the process
 					encrypt(item, i);
 				});
 			} catch (e) {
-  				if (e !== BreakException) throw e;
+				if (e !== BreakException) throw e;
 			}
 		});
 	}
@@ -93,7 +93,7 @@ let encrypt = (item, index) => {
 			refreshReportsTableData();
 
 			//After the last item: Tell the user process is done and can be started again
-			if(index === (tasks.length - 1)) {
+			if (index === (tasks.length - 1)) {
 				$("#SectionReports").find("#toggleEncryptButton").text('Start');
 			}
 		});

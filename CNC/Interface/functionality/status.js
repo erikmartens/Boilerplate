@@ -53,13 +53,74 @@ let postData = (id, setting, callback) => {
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	xhr.setRequestHeader('Token', '00530061006C00740079');
 
-    xhr.onload = () => {
-        if (typeof (callback) === "function") {
-            callback();
-        }
-    };
+	xhr.onload = () => {
+		if (typeof (callback) === "function") {
+			callback();
+		}
+	};
 
 	xhr.send(JSON.stringify(data));
+};
+
+let refreshStatusTableData = () => {
+	$("#StatusTableToFill").html("");
+
+	getData("Status", "ip", (data) => {
+		$("#StatusTableToFill").html("<tr>" + data.map((val, index) => {
+			let buttonText = val.workload !== 0 ? "Stop" : "Start";
+
+			return "<td>" + val.task + "</td><td>" + val.ip + "</td><td>" + val.id + "</td><td>" + val.workload + "</td>"
+                    + "<td><button id='" + val.id + "' class='btn btn-danger'>" + buttonText + "</button></td>";
+		}).join("</tr><tr>") + "</tr>");
+
+		data.forEach((item) => {
+			$("#StatusTableToFill").find("#" + item.id).on("click", () => {
+				let button = $("#StatusTableToFill").find("#" + item.id);
+
+				let state = button.text() !== "Start";
+
+				button.text(state ? "Start" : "Stop");
+				postData(item.id, !state, () => {
+					refreshStatusTableData();
+				});
+			});
+		});
+
+	});
+};
+let parseIP = (ip) => {
+	let ipSegments = ip.split(".");
+	//Parse IPv4
+	if (ipSegments.length > 1) {
+		//Get binary values of ip segements
+		for (let i = 0; i < ipSegments.length; i++) {
+			ipSegments[i] = parseInt(ipSegments[i]).toString(2);
+		}
+		//Fill up to comply with full 8 bit representation per segment
+		for (let i = 0; i < ipSegments.length; i++) {
+			if (ipSegments[i].length < 8) {
+				ipSegments[i] = "00000000".substr(ipSegments[i].length) + ipSegments[i];
+			}
+		}
+        //Return concatenated ip (binary representation) as an integer (it's always 4 segements)
+		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] + ipSegments[3]), 2);
+	} else { //Parse IPv6
+        //Getting rid of "/64" tail and splitting the rest
+		ipSegments = ip.split("/")[0].split(":");
+
+		//Get binary values of ip segements
+		for (let i = 0; i < ipSegments.length; i++) {
+			ipSegments[i] = parseInt(ipSegments[i], 16).toString(2);
+		}
+		//Fill up to comply with full 16 bit representation per segment
+		for (let i = 0; i < ipSegments.length; i++) {
+			if (ipSegments[i].length < 8) {
+				ipSegments[i] = "0000000000000000".substr(ipSegments[i].length) + ipSegments[i];
+			}
+		}
+        //Return concatenated ip (binary representation) as an integer (it's always 8 segements)
+		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] + ipSegments[3] + ipSegments[4] + ipSegments[5] + ipSegments[6] + ipSegments[7]), 2);
+	}
 };
 
 $(document).ready(() => {
@@ -115,64 +176,3 @@ $(document).ready(() => {
 	$("#MenuHome").click();
 	refreshStatusTableData();
 });
-
-let refreshStatusTableData = () => {
-	$("#StatusTableToFill").html("");
-
-	getData("Status", "ip", (data) => {
-		$("#StatusTableToFill").html("<tr>" + data.map((val, index) => {
-			let buttonText = val.workload !== 0 ? "Stop" : "Start";
-
-			return "<td>" + val.task + "</td><td>" + val.ip + "</td><td>" + val.id + "</td><td>" + val.workload + "</td>"
-                    + "<td><button id='" + val.id + "' class='btn btn-danger'>" + buttonText + "</button></td>";
-		}).join("</tr><tr>") + "</tr>");
-
-        data.forEach((item) => {
-            $("#StatusTableToFill").find("#" + item.id).on("click", () => {
-                let button = $("#StatusTableToFill").find("#" + item.id);
-
-                let state = button.text() !== "Start";
-
-                button.text(state ? "Start" : "Stop");
-                postData(item.id, !state, () => {
-                    refreshStatusTableData();
-                });
-            });
-        })
-		
-	});
-};
-let parseIP = (ip) => {
-	let ipSegments = ip.split(".");
-	//Parse IPv4
-	if (ipSegments.length > 1) {
-		//Get binary values of ip segements
-		for (let i = 0; i < ipSegments.length; i++) {
-			ipSegments[i] = parseInt(ipSegments[i]).toString(2);
-		}
-		//Fill up to comply with full 8 bit representation per segment
-		for (let i = 0; i < ipSegments.length; i++) {
-			if (ipSegments[i].length < 8) {
-				ipSegments[i] = "00000000".substr(ipSegments[i].length) + ipSegments[i];
-			}
-		}
-        //Return concatenated ip (binary representation) as an integer (it's always 4 segements)
-		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] + ipSegments[3]), 2);
-	} else { //Parse IPv6
-        //Getting rid of "/64" tail and splitting the rest
-		ipSegments = ip.split("/")[0].split(":");
-
-		//Get binary values of ip segements
-		for (let i = 0; i < ipSegments.length; i++) {
-			ipSegments[i] = parseInt(ipSegments[i], 16).toString(2);
-		}
-		//Fill up to comply with full 16 bit representation per segment
-		for (let i = 0; i < ipSegments.length; i++) {
-			if (ipSegments[i].length < 8) {
-				ipSegments[i] = "0000000000000000".substr(ipSegments[i].length) + ipSegments[i];
-			}
-		}
-        //Return concatenated ip (binary representation) as an integer (it's always 8 segements)
-		return parseInt((ipSegments[0] + ipSegments[1] + ipSegments[2] + ipSegments[3] + ipSegments[4] + ipSegments[5] + ipSegments[6] + ipSegments[7]), 2);
-	}
-};

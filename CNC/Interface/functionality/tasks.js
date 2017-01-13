@@ -21,26 +21,26 @@ let postTasksData = () => {
 };
 
 let removeTasksEntry = (id, callback) => {
-    let data = {
-        id: id,
-        type: 'hash-md5',
-        remove: true
-    };
+	let data = {
+		id: id,
+		type: 'hash-md5',
+		remove: true
+	};
 
-    let xhr = new XMLHttpRequest();
-    xhr.open('POST', 'http://localhost:3000/api/Tasks', true);
+	let xhr = new XMLHttpRequest();
+	xhr.open('POST', 'http://localhost:3000/api/Tasks', true);
 
-    xhr.responseType = 'json';
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    xhr.setRequestHeader('Token', '00530061006C00740079');
+	xhr.responseType = 'json';
+	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+	xhr.setRequestHeader('Token', '00530061006C00740079');
 
-    xhr.onload = () => {
-        if (typeof (callback) === "function") {
-            callback();
-        }
-    };
+	xhr.onload = () => {
+		if (typeof (callback) === "function") {
+			callback();
+		}
+	};
 
-    xhr.send(JSON.stringify(data));
+	xhr.send(JSON.stringify(data));
 };
 
 let refreshTasksTableData = () => {
@@ -51,22 +51,18 @@ let refreshTasksTableData = () => {
 			return "<td>" + val.id + "</td><td>" + val.type + "</td><td>" + val.data.input + "</td><td>" + val.data.output + "</td>" + "<td><button id='" + val.id + "' class='btn btn-danger'>Entfernen</button></td>";
 		}).join("</tr><tr>") + "</tr>");
 
-        
-        data.forEach((item) => {
-            $("#TasksTableToFill").find("#" + item.id).on("click", () => {
-
-                let button = $("#TasksTableToFill").find("#" + item.id);
-
-                removeTasksEntry(item.id, () => {
-                    refreshTasksTableData();
-                });
-            });
-        })
+		data.forEach((item) => {
+			$("#TasksTableToFill").find("#" + item.id).on("click", () => {
+				removeTasksEntry(item.id, () => {
+					refreshTasksTableData();
+				});
+			});
+		});
 	});
 };
 
 let refreshTasks_onButtonPress = () => {
-    refreshTasksTableData();
+	refreshTasksTableData();
 };
 
 $(document).ready(() => {
