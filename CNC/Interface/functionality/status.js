@@ -129,13 +129,9 @@ let refresh = () => {
 
         data.forEach((item) => {
             $("#StatusTableToFill").find("#" + item.id).on("click", () => {
-                console.log('pressed');
                 let button = $("#StatusTableToFill").find("#" + item.id);
 
                 let state = button.text() !== "Start";
-
-                console.log(item.id);
-                console.log(state);
 
                 button.text(state ? "Start" : "Stop");
                 postData(item.id, !state, () => {
