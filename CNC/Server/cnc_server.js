@@ -151,7 +151,7 @@ server.post('/api/Tasks', (req, res) => {
 		if (tasksEntries.length === 0) {
 			next_id = 1;
 		} else {
-			next_id =tasksEntries[tasksEntries.length - 1].id + 1;
+			next_id = tasksEntries[tasksEntries.length - 1].id + 1;
 		}
 
 		//POST request must include allowed type, otherwise nothing can be updated or added

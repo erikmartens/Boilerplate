@@ -1,6 +1,7 @@
 /**
  * Created by tuxlin on 15/11/16.
  */
+
 let postTasksData = () => {
 	let data = {
 		type: document.getElementById("optionSelect").value,

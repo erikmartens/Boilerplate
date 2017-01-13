@@ -7,7 +7,7 @@ let tasksTypes = [ 'hash-md5', 'hash-sha256' ];
 
 let postEncryptedTasksData = (data, callback) => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', serverAddress + '/api/Reports', true);
+	xhr.open('POST', document.getElementById("inputServerAddress").value + '/api/Reports', true);
 
 	xhr.responseType = 'json';
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
@@ -35,8 +35,8 @@ let start_stop_onButtonPress = () => {
 		getData('Tasks', 'id', (data) => {
 			data.forEach((item) => {
 				if (item.data.output === undefined && item.type !== 'crack-md5') {
-						tasks.push(item);
-					}
+					tasks.push(item);
+				}
 			});
 			//tasks = data;
 
@@ -100,7 +100,7 @@ let encrypt = (item, index) => {
 
 			completedTasks.push(completedTask);
 			refreshReportsTableData();
-			
+
 			if (index === (tasks.length - 1)) {
 				//After the last item: Tell the user process is done and can be started again
 				$("#SectionReports").find("#toggleEncryptButton").text('Start');
