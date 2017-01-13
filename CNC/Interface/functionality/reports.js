@@ -7,7 +7,7 @@ let tasksTypes = [ 'hash-md5', 'hash-sha256' ];
 
 let postEncryptedTasksData = (data, callback) => {
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', 'http://localhost:3000/api/Reports', true);
+	xhr.open('POST', serverAddress + '/api/Reports', true);
 
 	xhr.responseType = 'json';
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');

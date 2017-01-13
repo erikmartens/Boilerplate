@@ -9,7 +9,7 @@ setInterval(() => {
 let getData = (target, sortField, callback) => {
 	let xhr = new XMLHttpRequest();
 
-	xhr.open('GET', 'http://localhost:3000/api/' + target);
+	xhr.open('GET', document.getElementById("inputServerAddress").value + '/api/' + target);
 	xhr.responseType = 'json';
 	xhr.setRequestHeader('Content-Type', 'application/json');
 	xhr.setRequestHeader('Token', '00530061006C00740079');
@@ -47,7 +47,7 @@ let postData = (id, setting, callback) => {
 	};
 
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', 'http://localhost:3000/api/Status', true);
+	xhr.open('POST', document.getElementById("inputServerAddress").value + '/api/Status', true);
 
 	xhr.responseType = 'json';
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');

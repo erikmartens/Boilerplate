@@ -18,6 +18,7 @@
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+  <script src="functionality/home.js"></script>
   <script src="functionality/status.js"></script>
     <script src="functionality/tasks.js"></script>
     <script src="functionality/reports.js"></script>
@@ -45,7 +46,11 @@
             <section id="SectionHome">
               <h1>Home</h1>
               <h5>Willkommen auf dem CNC Server der Gruppe "Salty"! Do your thing after the *beep*...</h5>
+                <input type="text" id="inputServerAddress" value="http://localhost:3000" style="margin-right: 10px">
+                <button class="btn btn-md btn-primary" onclick="refreshEverything_onButtonPress()">Refresh</button>
+              <div>
               <img src="icon.png" alt="Salty">
+              </div>
             </section>
             <section id="SectionStatus">
               <h1>Status</h1>

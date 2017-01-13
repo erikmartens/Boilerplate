@@ -1,7 +1,6 @@
 /**
  * Created by tuxlin on 15/11/16.
  */
-
 let postTasksData = () => {
 	let data = {
 		type: document.getElementById("optionSelect").value,
@@ -11,7 +10,7 @@ let postTasksData = () => {
 	};
 
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', 'http://localhost:3000/api/Tasks', true);
+	xhr.open('POST', document.getElementById("inputServerAddress").value + '/api/Tasks', true);
 
 	xhr.responseType = 'json';
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
@@ -28,7 +27,7 @@ let removeTasksEntry = (id, callback) => {
 	};
 
 	let xhr = new XMLHttpRequest();
-	xhr.open('POST', 'http://localhost:3000/api/Tasks', true);
+	xhr.open('POST', document.getElementById("inputServerAddress").value + '/api/Tasks', true);
 
 	xhr.responseType = 'json';
 	xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
