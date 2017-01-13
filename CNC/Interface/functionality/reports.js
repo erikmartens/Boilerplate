@@ -28,25 +28,34 @@ let start_stop_onButtonPress = () => {
 	button.text(state ? 'Stop' : 'Start');
 
 	if (state) {
-        //Delete old data
+		//Delete old data
 		tasks = [];
 
         //Get new data
 		getData('Tasks', 'id', (data) => {
-			tasks = data;
+			data.forEach((item) => {
+				if (item.data.output === undefined && item.type !== 'crack-md5') {
+						tasks.push(item);
+					}
+			});
+			//tasks = data;
 
 			let BreakException = {};
-			try {
-				tasks.forEach((item, i) => {
-					//Check whether button state is still true
-					state = button.text() === 'Stop';
-					if (!state) throw BreakException;
+			if (tasks.length <= 0) {
+				$("#SectionReports").find("#toggleEncryptButton").text('Start');
+			} else {
+				try {
+					tasks.forEach((item, i) => {
+						//Check whether button state is still true
+						state = button.text() === 'Stop';
+						if (!state) throw BreakException;
 
-					//Encrypt next item, if the user did not stop the process
-					encrypt(item, i);
-				});
-			} catch (e) {
-				if (e !== BreakException) throw e;
+						//Encrypt next item, if the user did not stop the process
+						encrypt(item, i);
+					});
+				} catch (e) {
+					if (e !== BreakException) throw e;
+				}
 			}
 		});
 	}
@@ -91,9 +100,9 @@ let encrypt = (item, index) => {
 
 			completedTasks.push(completedTask);
 			refreshReportsTableData();
-
-			//After the last item: Tell the user process is done and can be started again
+			
 			if (index === (tasks.length - 1)) {
+				//After the last item: Tell the user process is done and can be started again
 				$("#SectionReports").find("#toggleEncryptButton").text('Start');
 			}
 		});

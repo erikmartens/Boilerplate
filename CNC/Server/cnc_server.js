@@ -147,7 +147,12 @@ server.post('/api/Tasks', (req, res) => {
 			return 0;
 		});
 
-		let next_id = tasksEntries[tasksEntries.length - 1].id + 1;
+		let next_id;
+		if (tasksEntries.length === 0) {
+			next_id = 1;
+		} else {
+			next_id =tasksEntries[tasksEntries.length - 1].id + 1;
+		}
 
 		//POST request must include allowed type, otherwise nothing can be updated or added
 		if (req.body.type === undefined) {
@@ -158,7 +163,7 @@ server.post('/api/Tasks', (req, res) => {
 			res.json({ code: 400, message: 'BAD REQUEST: Undefined type information passed' });
 		} else {
 			//POST request can modify a task or add a new task (latter case requires passing no ID)
-			let targtedItem = tasksEntries.find((item) => {
+			let targetedItem = tasksEntries.find((item) => {
 				return item.id === req.body.id;
 			});
 
@@ -166,13 +171,10 @@ server.post('/api/Tasks', (req, res) => {
 			let task = JSON.parse(JSON.stringify(template));
 
 
-			if (targtedItem !== undefined) {
-				console.log(req.body.remove);
-				console.log(req.body.id);
+			if (targetedItem !== undefined) {
 				if (req.body.remove === true) {
-					console.log('remove');
 					//Remove an entry
-					let index = tasksEntries.indexOf(targtedItem);
+					let index = tasksEntries.indexOf(targetedItem);
 
 					if (index > -1) {
 						tasksEntries.splice(index, 1);
@@ -183,7 +185,7 @@ server.post('/api/Tasks', (req, res) => {
 
 				} else { //req.body.remove will be undefined
 					//Modify a current entry
-					tasksEntries[tasksEntries.indexOf(targtedItem)] = task;
+					tasksEntries[tasksEntries.indexOf(targetedItem)] = task;
 
 					res.status(200);
 					res.json({ code: 200, message: 'SUCCESS: Tasks item was modified successfully' });
@@ -218,15 +220,15 @@ server.post('/api/Tasks', (req, res) => {
 
 server.post('/api/Reports', (req, res) => {
 	if (tasksEntries instanceof Array) {
-		let targtedItem = tasksEntries.find((item) => {
+		let targetedItem = tasksEntries.find((item) => {
 			return item.id === req.body.id;
 		});
 
-		if (targtedItem !== undefined) {
-			if (targtedItem.data.output === undefined) {
+		if (targetedItem !== undefined) {
+			if (targetedItem.data.output === undefined) {
 				let template = Object.assign({ id: -1, type: '', data: { input: '', output: '' } }, req.body);
 				let task = JSON.parse(JSON.stringify(template));
-				tasksEntries[tasksEntries.indexOf(targtedItem)] = task;
+				tasksEntries[tasksEntries.indexOf(targetedItem)] = task;
 
 				res.status(200);
 				res.json({ code: 200, message: 'OK: Item with specified ID was updated' });
