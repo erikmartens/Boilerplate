@@ -53,7 +53,7 @@ server.get('/api/Status/:id', (req, res) => {
 			res.send(JSON.stringify(requestedItem));
 		} else {
 			res.status(404);
-			res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID not present' });
+			res.json({ code: 404, message: 'NOT FOUND: Item with specified ID not present' });
 		}
 	}
 });
@@ -75,7 +75,7 @@ server.get('/api/Tasks/:id', (req, res) => {
 			res.send(JSON.stringify(targetedItem));
 		} else {
 			res.status(404);
-			res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID not present' });
+			res.json({ code: 404, message: 'NOT FOUND: Item with specified ID not present' });
 		}
 	}
 });
@@ -126,7 +126,7 @@ server.post('/api/Status', (req, res) => {
 			res.json({ code: 400, message: 'BAD REQUEST: No ID was passed with the request' });
 		} else { //Wrong ID was passed
 			res.status(404);
-			res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID does not exist' });
+			res.json({ code: 404, message: 'NOT FOUND: Item with specified ID does not exist' });
 		}
 	} else {
 		res.status(400);
@@ -212,7 +212,7 @@ server.post('/api/Tasks', (req, res) => {
 		}
 	} else {
 		res.status(404);
-		res.json({ code: 404, message: 'BAD REQUEST: Token does not check out' });
+		res.json({ code: 404, message: 'NOT FOUND: Token does not check out' });
 	}
 });
 
@@ -238,7 +238,7 @@ server.post('/api/Reports', (req, res) => {
 			}
 		} else {
 			res.status(404);
-			res.json({ code: 404, message: 'BAD REQUEST: Item with specified ID not present' });
+			res.json({ code: 404, message: 'NOT FOUND: Item with specified ID not present' });
 		}
 
 		//Save changes to file system

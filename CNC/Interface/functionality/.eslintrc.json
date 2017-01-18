@@ -20,7 +20,9 @@
         "Stuff": true,
         "Texture": true,
         "global": true,
-        "lychee": true
+        "lychee": true,
+        "getData": true,
+        "$": true
     },
     "rules": {
         "array-bracket-spacing": [ "error", "always", {
